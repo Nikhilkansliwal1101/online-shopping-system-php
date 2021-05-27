@@ -16,6 +16,7 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
@@ -29,7 +30,7 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
 
 <body>
     <?php require("common/navbar.php"); ?>
-    <div class="container-fluid">
+    <div class="container mb-5">
         <div class="row">
             <div id="subcategoryname" class="m-0 p-0">
             </div>
@@ -48,12 +49,12 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
                 </div>
             </div>
 
-            <div class="card-group card-deck row row-cols-2 row-cols-md-3 row-cols-lg-5 g-0 text-center d-flex justify-content-around p-2 m-0" id="product">
+            <div class="card-group card-deck row row-cols-1 row-cols-md-2 row-cols-lg-5 g-0 text-center d-flex justify-content-around p-2 m-0" id="product">
             </div>
         </div>
     </div>
 
-    <?php require("common/script.php"); ?>
+    <?php require("common/script.php"); require("common/footer.php"); ?>
 
 
     <script>
@@ -94,24 +95,27 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
                 break;
             }
         }
-
-        cart.push(product);
-
+        if(product['quantity']>0)
+        {
+            cart.push(product);
+        }
         localStorage.setItem('cart', JSON.stringify(cart));
     }
 
     function increment(item) {
-        item = item.parentNode.parentNode;
-        item = item.getElementsByClassName("quantity");
-        item[0].innerHTML = parseInt(item[0].innerHTML) + 1;
+        block = item.parentNode.parentNode;
+        block = block.getElementsByClassName("quantity");
+        block[0].innerHTML = parseInt(block[0].innerHTML) + 1;
+        addproduct(item.parentNode);
     }
 
     function decrement(item) {
-        item = item.parentNode.parentNode;
-        item = item.getElementsByClassName("quantity");
-        if (parseInt(item[0].innerHTML) > 1) {
-            item[0].innerHTML = parseInt(item[0].innerHTML) - 1;
+        block = item.parentNode.parentNode;
+        block = block.getElementsByClassName("quantity");
+        if (parseInt(block[0].innerHTML) > 0) {
+            block[0].innerHTML = parseInt(block[0].innerHTML) - 1;
         }
+        addproduct(item.parentNode);
     }
 
     function getproduct(subcatid) {

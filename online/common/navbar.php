@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="./">Customer First</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -10,9 +10,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="./">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#" tabindex="-1" href="#">contact us</a>
-                </li>
             </ul>
             <form class="d-flex">
                 <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search"> -->
@@ -21,8 +18,7 @@
                 if(isset($_SESSION['logined']))
                 {
                   echo 
-                  '<a href="profile.php"><button class="btn btn-outline-success mx-2" type="button" name="profile">Profile</button></a>
-                  <a href="logout.php"><button class="btn btn-outline-success mx-2" type="button" name="logout">Logout</button></a>';
+                  '<a href="profile.php"><button class="btn btn-outline-success mx-2" type="button" name="profile">Profile</button></a>';
 
                 }
                 else

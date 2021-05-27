@@ -8,15 +8,15 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <title>Cart</title>
 </head>
 
 <body>
     <?php require("common/navbar.php"); ?>
-    <div class="container small">
+    <div class="container small mb-5">
         <div id="cart" class="border border-4 p-2 shadow">
             <div class="card p-3 shadow text-center">
                 <div class="card-header">
@@ -50,8 +50,7 @@ session_start();
             }
             ?>
 
-            <div class="modal fade bd-example-modal-lg p-0 m-0" id="orderd" tabindex="-1" role="dialog"
-                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal fade bd-example-modal-lg p-0 m-0" id="orderd" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content container border border-4 p-0 m-0">
                         <div class="modal-header">
@@ -65,97 +64,97 @@ session_start();
         </div>
 
 
-        <?php require("common/script.php"); ?>
+        <?php require("common/script.php"); require("common/footer.php"); ?>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js">
         </script>
         <script>
-        var total_disc = 0;
-        var total_amt = 0;
-        var total_cgst = 0;
-        var total_sgst = 0;
-        var total_mrp = 0;
-        var products = [];
-        var c = <?php if (isset($_SESSION['custid'])) echo $_SESSION['custid'];
+            var total_disc = 0;
+            var total_amt = 0;
+            var total_cgst = 0;
+            var total_sgst = 0;
+            var total_mrp = 0;
+            var products = [];
+            var c = <?php if (isset($_SESSION['custid'])) echo $_SESSION['custid'];
                     else echo '0' ?>;
-        $(document).ready(function() {
-            currentorder();
-            if (c != 0)
-                getpreorder();
-        });
+            $(document).ready(function() {
+                currentorder();
+                if (c != 0)
+                    getpreorder();
+            });
 
-        function getorderdisc(orderid) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("orderdisc").innerHTML = this.responseText;
-                    $('#orderd').modal('toggle');
-                }
-            };
-            xhttp.open("GET", "list.php?list=orderdisc&orderid=" + orderid, true);
-            xhttp.send();
-        }
+            function getorderdisc(orderid) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("orderdisc").innerHTML = this.responseText;
+                        $('#orderd').modal('toggle');
+                    }
+                };
+                xhttp.open("GET", "list.php?list=orderdisc&orderid=" + orderid, true);
+                xhttp.send();
+            }
 
-        function getpreorder() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("preorder").innerHTML = this.responseText;
-                    $('#preorders').DataTable();
-                }
-            };
-            xhttp.open("GET", "list.php?list=order&c=" + c, true);
-            xhttp.send();
-        }
+            function getpreorder() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("preorder").innerHTML = this.responseText;
+                        $('#preorders').DataTable();
+                    }
+                };
+                xhttp.open("GET", "list.php?list=order&c=" + c, true);
+                xhttp.send();
+            }
 
-        function placeorder() {
-            let xhr = new XMLHttpRequest();
-            let url = "placeorder.php";
-            let data = "products=" + JSON.stringify(products) + "&c=" + c;
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.getElementById("currentorder").innerHTML = this.responseText;
-                    if (this.responseText == "") {
-                        document.getElementById("cart").innerHTML =
-                            `<div class="card p-3 shadow text-center">
+            function placeorder() {
+                let xhr = new XMLHttpRequest();
+                let url = "placeorder.php";
+                let data = "products=" + JSON.stringify(products) + "&c=" + c;
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        document.getElementById("currentorder").innerHTML = this.responseText;
+                        if (this.responseText == "") {
+                            document.getElementById("cart").innerHTML =
+                                `<div class="card p-3 shadow text-center">
                                 <div class="card-header">
                                     <h1>Your Cart</h1>
                                     <img src="images/emptycart.png" class="img-fluid" alt="Responsive image">
                                 </div>
                             </div>`;;
-                        localStorage.removeItem('cart');
-                        getpreorder();
+                            localStorage.removeItem('cart');
+                            getpreorder();
+                        }
+                    }
+                };
+                xhr.send(data);
+            }
+
+            function removeitem(pid) {
+                cart = JSON.parse(localStorage.getItem('cart'));
+                for (i = 0; i < cart.length; i++) {
+                    if (cart[i]['pno'] == pid) {
+                        cart.splice(i, 1);
+                        break;
                     }
                 }
-            };
-            xhr.send(data);
-        }
-
-        function removeitem(pid) {
-            cart = JSON.parse(localStorage.getItem('cart'));
-            for (i = 0; i < cart.length; i++) {
-                if (cart[i]['pno'] == pid) {
-                    cart.splice(i, 1);
-                    break;
-                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                currentorder();
             }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            currentorder();
-        }
 
-        function currentorder() {
-            cart = JSON.parse(localStorage.getItem('cart'));
-            var x = "";
-            total_disc = 0;
-            total_amt = 0;
-            total_cgst = 0;
-            total_sgst = 0;
-            total_mrp = 0;
-            products = [];
-            if ((cart != null) && (cart.length > 0)) {
-                x +=
-                `<table class="table table-sm table-hover table-bordered table-striped text-center">
+            function currentorder() {
+                cart = JSON.parse(localStorage.getItem('cart'));
+                var x = "";
+                total_disc = 0;
+                total_amt = 0;
+                total_cgst = 0;
+                total_sgst = 0;
+                total_mrp = 0;
+                products = [];
+                if ((cart != null) && (cart.length > 0)) {
+                    x +=
+                        `<table class="table table-sm table-hover table-bordered table-striped text-center">
                     <thead class="bg-success text-light">
                         <tr>
                             <th scope="col" style="display: none">PID</th>
@@ -204,7 +203,8 @@ session_start();
                                 <td>` + disc + `</td>
                                 <td>` + (cgst + sgst) + `</td>
                                 <td>` + price * qty + `</td>
-                                <td><button type="button" class="btn btn-close bg-danger p-2" onclick="removeitem(` + pid + `)"></button></td>
+                                <td><button type="button" class="btn btn-close bg-danger p-2" onclick="removeitem(` +
+                            pid + `)"></button></td>
                             </tr>`;
                     }
                     x +=
@@ -239,19 +239,19 @@ session_start();
                             </tr>
                         </tfoot>
                 </table>`;
-            }
-            if (x != "") {
-                document.getElementById("currentorder").innerHTML = x;
-            } else {
-                document.getElementById("cart").innerHTML =
-                    `<div class="card p-3 shadow text-center">
+                }
+                if (x != "") {
+                    document.getElementById("currentorder").innerHTML = x;
+                } else {
+                    document.getElementById("cart").innerHTML =
+                        `<div class="card p-3 shadow text-center">
                         <div class="card-header">
                             <h1>Your Cart</h1>
                             <img src="images/emptycart.png" class="img-fluid" alt="Responsive image">
                         </div>
                     </div>`;
+                }
             }
-        }
         </script>
 </body>
 

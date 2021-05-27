@@ -77,6 +77,7 @@ if (isset($_POST['resendotp'])) {
     header("Location: signin.php");
     die();
 }
+mysqli_close($con);
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +88,7 @@ if (isset($_POST['resendotp'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 
@@ -99,7 +101,7 @@ if (isset($_POST['resendotp'])) {
     if ($_SESSION['emailvarified'] == 1) {
         $email = $_SESSION['email'];
         echo
-        '<div class="container border border-4 shadow p-3" style="max-width: 600px">
+        '<div class="container border border-4 shadow p-3 mb-5" style="max-width: 600px">
             <h2>Sign in for more</h2>
             <hr>
             <form class="row g-3" method="post" action="signin.php">
@@ -177,6 +179,8 @@ if (isset($_POST['resendotp'])) {
         }
     }
     ?>
+
+
     <!-- modal for otp enter -->
     <div class="modal fade" id="otpmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -201,7 +205,7 @@ if (isset($_POST['resendotp'])) {
             </div>
         </div>
     </div>
-    <?php require("common/script.php"); ?>
+    <?php require("common/script.php"); require("common/footer.php"); ?>
 </body>
 
 </html>

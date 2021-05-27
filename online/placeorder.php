@@ -1,4 +1,8 @@
 <?php
+if (!isset($_POST['c'])) {
+    header("Location: index.php");
+    die();
+}
 require("common/database.php");
 $custid = $_POST['c'];
 $query = "INSERT INTO `orders` (`orderid`, `custid`, `orderdate`, `status`) VALUES (NULL, '$custid', current_timestamp(), 'notcom');";
@@ -20,13 +24,13 @@ if ($result) {
         $mrp = $product['mrp'];
         $price = $product['price'];
         if ($available >= $qty) {
-            $update = "UPDATE `product` SET `available` = `available`-$qty WHERE `product`.`productno` = $pno;";
+            $update = "UPDATE `product` SET `available` = `available`-$qty, `sold` = `sold`+$qty WHERE `product`.`productno` = $pno;";
             mysqli_query($con, $update);
             $add = "INSERT INTO `orderdiscription` (`orderid`, `productno`, `pname`, `quantity`, `cgst`, `sgst`, `mrp`, `sellprice`, `purchaseprice`) VALUES ('$orderid', '$pno', '$pname', '$qty', '$cgst', '$sgst', '$mrp', '$price', '$purchaseprice');";
             mysqli_query($con, $add);
         } else if ($available != 0) {
             $qty = $available;
-            $update = "UPDATE `product` SET `available` = `available`-$qty WHERE `product`.`productno` = $pno;";
+            $update = "UPDATE `product` SET `available` = `available`-$qty, `sold` = `sold`+$qty WHERE `product`.`productno` = $pno;";
             mysqli_query($con, $update);
             $add = "INSERT INTO `orderdiscription` (`orderid`, `productno`, `pname`, `quantity`, `cgst`, `sgst`, `mrp`, `sellprice`, `purchaseprice`) VALUES ('$orderid', '$pno', '$pname', '$qty', '$cgst', '$sgst', '$mrp', '$price', '$purchaseprice');";
             mysqli_query($con, $add);
@@ -39,3 +43,4 @@ if ($result) {
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
 }
+mysqli_close($con);

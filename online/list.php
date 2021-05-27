@@ -39,7 +39,7 @@ if ($_GET['list'] == 'product') {
                         <div class="card-body d-flex justify-content-center flex-column p-2">
                             <h6 class="card-title text-center">' . $pname . '</h6>
                             <hr>
-                            <p><span>&#8377;</span><strong> ' . $price . ' </strong><small style="font-size: x-small;"><s> ' . $mrp . '</s></small></p>
+                            <p><span>&#8377;</span><strong> ' . $price . ' </strong>';if($price!=$mrp)echo '<small style="font-size: x-small;"><s> ' . $mrp . '</s></small>';echo'</p>
                         </div>
                         <div class="m-0 p-0">
                             <p class="p-0 m-0 text-primary" style="font-size: small; text-align: center;">' . $available . ' Items Available</p>
@@ -202,26 +202,26 @@ if ($_GET['list'] == 'product') {
                     <tr>
                         <td></td>
                         <td>CGST   :</td>
-                        <td>' . $total_cgst . '</td>
+                        <td><span>&#8377; </span>' . $total_cgst . '</td>
                         <td></td>
                         <td>Total: </td>
-                        <td>' . $total_mrp . '</td>
+                        <td><span>&#8377; </span>' . $total_mrp . '</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>SGST:</td>
-                        <td>' . $total_sgst . '</td>
+                        <td><span>&#8377; </span>' . $total_sgst . '</td>
                         <td></td>
                         <td>DISC:</td>
-                        <td>' . $total_disc . '</td>
+                        <td><span>&#8377; </span>' . $total_disc . '</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>TOTAL TAX:</td>
-                        <td>' . ($total_cgst + $total_sgst) . '</td>
+                        <td><span>&#8377; </span>' . ($total_cgst + $total_sgst) . '</td>
                         <td></td>
                         <td>NET AMT:</td>
-                        <td>' . $total_amt . '</td>
+                        <td><span>&#8377; </span>' . $total_amt . '</td>
                     </tr>
                 </tfoot>
             </table>

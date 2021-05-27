@@ -98,7 +98,6 @@ if(!isset($_SESSION['logined']))
                             <th scope="col" style="display: none">MRP</th>>
                             <th scope="col" style="display: none">Sell Price</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Add</th>
                         </tr>
                     </thead>
                     <tbody id="product">
@@ -151,9 +150,10 @@ if(!isset($_SESSION['logined']))
                 break;
             }
         }
-
-        neworder.push(product);
-
+        if(product['quantity']>0)
+        {
+            neworder.push(product);
+        }
         localStorage.setItem('neworder', JSON.stringify(neworder));
         order();
     }
@@ -176,16 +176,20 @@ if(!isset($_SESSION['logined']))
 
     function increment(item) {
         item = item.parentNode.parentNode;
+        block=item;
         item = item.getElementsByClassName("quantity");
         item[0].innerHTML = parseInt(item[0].innerHTML) + 1;
+        addproduct(block); 
     }
 
     function decrement(item) {
         item = item.parentNode.parentNode;
+        block=item;
         item = item.getElementsByClassName("quantity");
-        if (parseInt(item[0].innerHTML) > 1) {
+        if (parseInt(item[0].innerHTML) > 0) {
             item[0].innerHTML = parseInt(item[0].innerHTML) - 1;
         }
+        addproduct(block); 
     }
 
     function placeorder() {
@@ -311,28 +315,28 @@ if(!isset($_SESSION['logined']))
                         <tr>
                             <td></td>
                             <td>CGST:</td>
-                            <td>` + total_cgst + `</td>
+                            <td><span>&#8377; </span>` + total_cgst + `</td>
                             <td></td>
                             <td>TOTAL:</td>
-                            <td>` + total_mrp + `</td>
+                            <td><span>&#8377; </span>` + total_mrp + `</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>SGST:</td>
-                            <td>` + total_sgst + `</td>
+                            <td><span>&#8377; </span>` + total_sgst + `</td>
                             <td></td>
                             <td>DISC:</td>
-                            <td>` + total_disc + `</td>
+                            <td><span>&#8377; </span>` + total_disc + `</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>TOTAL:</td>
-                            <td>` + (total_cgst + total_sgst) + `</td>
+                            <td><span>&#8377; </span>` + (total_cgst + total_sgst) + `</td>
                             <td></td>
                             <td>NET AMT:</td>
-                            <td>` + total_amt + `</td>
+                            <td><span>&#8377; </span>` + total_amt + `</td>
                             <td></td>
                         </tr>
                     </tfoot>

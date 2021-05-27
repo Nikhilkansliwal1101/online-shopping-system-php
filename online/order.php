@@ -213,28 +213,28 @@ session_start();
                             <tr>
                                 <td></td>
                                 <td>CGST:</td>
-                                <td>` + total_cgst + `</td>
+                                <td><span>&#8377; </span>` + total_cgst + `</td>
                                 <td></td>
                                 <td>TOTAL:</td>
-                                <td>` + total_mrp + `</td>
+                                <td><span>&#8377; </span>` + total_mrp + `</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td>SGST:</td>
-                                <td>` + total_sgst + `</td>
+                                <td><span>&#8377; </span>` + total_sgst + `</td>
                                 <td></td>
                                 <td>DISC:</td>
-                                <td>` + total_disc + `</td>
+                                <td><span>&#8377; </span>` + total_disc + `</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td>TOTAL TAX:</td>
-                                <td>` + (total_cgst + total_sgst) + `</td>
+                                <td><span>&#8377; </span>` + (total_cgst + total_sgst) + `</td>
                                 <td></td>
                                 <td>NET AMT:</td>
-                                <td>` + total_amt + `</td>
+                                <td><span>&#8377; </span>` + total_amt + `</td>
                                 <td></td>
                             </tr>
                         </tfoot>

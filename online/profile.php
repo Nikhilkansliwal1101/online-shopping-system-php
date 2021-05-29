@@ -47,7 +47,7 @@ mysqli_close($con);
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 
@@ -97,16 +97,17 @@ mysqli_close($con);
       </form>
     </fieldset>
     <div class="row">
-    <div class="col-6 p-2 my-2">
-      <button type="button" class="btn btn-primary w-100" id="editbutton" onclick=editinfo()>Edit</button>
-    </div>
-    <div class="col-6 p-2 my-2">
-      <a href="logout.php"><button type="button" class="btn btn-danger w-100" id="logoutbutton">Logout</button></a>
-    </div>
+      <div class="col-6 p-2 my-2">
+        <button type="button" class="btn btn-primary w-100" id="editbutton" onclick=editinfo()>Edit</button>
+      </div>
+      <div class="col-6 p-2 my-2">
+        <a href="logout.php"><button type="button" class="btn btn-danger w-100" id="logoutbutton">Logout</button></a>
+      </div>
     </div>
   </div>
 
-  <?php require("common/script.php"); require("common/footer.php"); ?>
+  <?php require("common/script.php");
+  require("common/footer.php"); ?>
   <script>
     function editinfo() {
       document.getElementById('editbutton').style.display = 'none';

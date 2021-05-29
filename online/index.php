@@ -74,7 +74,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
             <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
                 <h4>-: Shop By Category :-</h4>
             </div>
-            <div class="card-group row row-cols-3 row-cols-md-4 row-cols-lg-6 w-100 d-flex justify-content-around align-items-center">
+            <div class="card-group row row-cols-3 row-cols-md-4 row-cols-lg-6 g-0 w-100 d-flex justify-content-around align-items-center">
                 <?php
                 foreach ($category as $cat) {
                     $image = $cat["image"];

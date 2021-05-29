@@ -269,11 +269,11 @@ if ($_GET['list'] == 'subcat') {
         <td style="display: none"><h5>' . $product['mrp'] . '</h5></td>
         <td style="display: none"><h5>' . $product['sellprice'] . '</h5></td>
         <td>
-            <div class="row text-center">
-                <div class="col-4"><button type="button" class="btn btn-danger p-1 m-0" style="width: 100%" onclick=decrement(this)>-</button>
+            <div class="row text-center d-flex align-items-center">
+                <div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
                 </div>
-                <div class="col-4 text-center"><h5 class="quantity">0</h5></div>
-                <div class="col-4 "><button type="button" class="btn btn-success p-1 m-0" style="width: 100%" onclick=increment(this)>+</button>
+                <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
+                <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
                 </div>
             </div>
         </td>';

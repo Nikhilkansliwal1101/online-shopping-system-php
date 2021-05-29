@@ -43,7 +43,7 @@ session_start();
             <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
                 <h4>-: Shop By Category :-</h4>
             </div>
-            <div id="subcategory" class="card-group row row-cols-3 row-cols-md-4 row-cols-lg-6 g-0 m-2 w-100 d-flex justify-content-around align-items-center">
+            <div id="subcategory" class="card-group row row-cols-3 row-cols-md-4 row-cols-lg-6 g-0 w-100 d-flex justify-content-around align-items-center"> 
             </div>
         </div>
 

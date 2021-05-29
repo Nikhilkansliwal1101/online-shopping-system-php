@@ -72,16 +72,22 @@ $detail = mysqli_fetch_assoc($detail);
       <button type="submit" class="btn btn-primary" value="savechanges" name="savechanges" id="savechanges" style="display: none;">Save Changes</button>
     </form>
     </fieldset>
-    <div class="p-2 m-2">
-      <button type="button" class="btn btn-primary w-100" id="editbutton" onclick=editinfo()>Edit</button>
+    <div class="row">
+      <div class="col-6 p-2 my-2">
+        <button type="button" class="btn btn-primary w-100" id="editbutton" onclick=editinfo()>Edit</button>
+      </div>
+      <div class="col-6 p-2 my-2">
+        <a href="logout.php"><button type="button" class="btn btn-danger w-100" id="logoutbutton">Logout</button></a>
+      </div>
     </div>
   </div>
   <?php require("common/script.php"); ?>
   <script>
     function editinfo() {
-      document.getElementById('editbutton').style.display='none';
-      document.getElementById('savechanges').style.display='block';
-      document.getElementById('form').disabled=false;
+      document.getElementById('editbutton').style.display = 'none';
+      document.getElementById('logoutbutton').style.display = 'none';
+      document.getElementById('savechanges').style.display = 'block';
+      document.getElementById('form').disabled = false;
     }
   </script>
 </body>

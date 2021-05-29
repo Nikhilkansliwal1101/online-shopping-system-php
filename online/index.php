@@ -1,8 +1,8 @@
 <?php
 session_start();
 require("common/database.php");
-$query="SELECT * FROM `category`";
-$category=mysqli_query($con,$query);
+$query = "SELECT * FROM `category`";
+$category = mysqli_query($con, $query); 
 $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
 ?>
 
@@ -20,7 +20,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
 </head>
 
 <body>
-    <?php require("common/navbar.php");?>
+    <?php require("common/navbar.php"); ?>
     <!-- corousel -->
     <div id="carouselExampleDark" class="carousel carousel-light slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -67,57 +67,90 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         </button>
     </div>
 
-    <hr>
-    <div class="container mb-5">
-        <?php
-            foreach($category as $cat)
-            {
-                echo 
-                '<div class="row border border-3 rounded-2 shadow p-1 m-0">';
-                    $image=$cat["image"];
-                    $catname=$cat["catname"];
-                    $catdesc=$cat["catdesc"];
-                    $catid=$cat['catid'];
+    
+    <div class="mb-5">
+        <!-- showing all category to nevigate to perticular category -->
+        <div class="border border-3 rounded-2 shadow p-1 d-flex justify-content-center align-items-center flex-column">
+            <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+                <h4>-: Shop By Category :-</h4>
+            </div>
+            <div class="card-group row row-cols-3 row-cols-md-4 row-cols-lg-6 w-100">
+                <?php
+                foreach ($category as $cat) {
+                    $image = $cat["image"];
+                    $catname = $cat["catname"];
+                    $catid = $cat['catid'];
                     echo
-                    '<div class="col-md-6 col-lg-4 m-0 p-1">
-                        <div class="card border border-3 rounded-2 shadow p-3 d-flex justify-content-center" style="height:300px;">
-                            <img src="images/'.$image.'" alt="image" class="card-img-top p-1" style="width:100%; height: 150px">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">'.$catname.'</h5>
-                                <p class="card-text text-center">'.$catdesc.'</p>
+                    '<div class="col m-0">
+                        <a href="category.php?catid=' . $catid . '" style="text-decoration: none">
+                        <div class="card border border-2 rounded-2 shadow bg-white text-dark text-center" style="height:150px;">
+                            <div class="card-body d-flex justify-content-center align-items-center" style="z-index: 1;">
+                                <h6 class="card-title" style="font-weight: 900">' . $catname . '</h6>
                             </div>
+                            <img src="images/' . $image . '" alt="image" class="card-img p-1" width=100% height=100% style="opacity: 0.7;position: absolute;z-index: 0;">
                         </div>
+                        </a>
                     </div>';
-                    $query="SELECT * FROM `subcategory` WHERE catid=$catid";
-                    $subcategory=mysqli_query($con,$query);
-                    echo 
-                    '<div class="col-md-6 col-lg-8 m-0 p-1 d-flex justify-content-center align-items-center">
-                    <div class="card-group row row-cols-2 row-cols-md-3 row-cols-lg-4 g-0 ">';
-                    while($subcat=mysqli_fetch_assoc($subcategory))
-                    {
-                        $image=$subcat["image"];
-                        $subcatname=$subcat["name"];
-                        $subcatid=$subcat['subcatid'];
+                }
+                ?>
+            </div>
+        </div>
+        
+        <!-- showing all category with its subcategories -->
+        <?php
+        foreach ($category as $cat) {
+            echo
+            '<div class="row border border-3 rounded-2 shadow p-1 m-0">';
+                $image = $cat["image"];
+                $catname = $cat["catname"];
+                $catdesc = $cat["catdesc"];
+                $catid = $cat['catid'];
+                echo
+                '<div class="col-md-6 col-lg-4 m-0 p-1">
+                    <a href="category.php?catid=' . $catid . '" style="text-decoration: none">
+                    <div class="card border border-3 rounded-2 shadow p-3  text-dark d-flex justify-content-center" style="height:300px;">
+                        <img src="images/' . $image . '" alt="image" class="card-img-top p-1" style="width:100%; height: 150px">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">' . $catname . '</h5>
+                            <p class="card-text text-center">' . $catdesc . '</p>
+                        </div>
+                    </div>
+                    </a>
+                </div>';
+                $query = "SELECT * FROM `subcategory` WHERE catid=$catid";
+                $subcategory = mysqli_query($con, $query);
+                echo
+                '<div class="col-md-6 col-lg-8 m-0 p-1 d-flex justify-content-center align-items-center">
+                    <div class="card-group row row-cols-2 row-cols-md-3 row-cols-lg-5 g-0 w-100">';
+                    while ($subcat = mysqli_fetch_assoc($subcategory)) {
+                        $image = $subcat["image"];
+                        $subcatname = $subcat["name"];
+                        $subcatid = $subcat['subcatid'];
                         echo
-                        '<a href="subcategory.php?subcatid='.$subcatid.'&catid='.$catid.'" class="text-decoration-none">
-                        <div class="col m-0">
-                            <div class="card  border border-3 rounded-2 shadow p-1 mb-1 bg-white text-dark d-flex justify-content-center align-items-center" style="height:200px;">
-                                <img src="images/'.$image.'" alt="image" class="card-img-top p-1" style="width:100%;height:100px;" >
-                                <div class="card-body text-center">
-                                    <p class="card-title">'.$subcatname.'</p>
+                        '<a href="subcategory.php?subcatid=' . $subcatid . '&catid=' . $catid . '" class="text-decoration-none">
+                            <div class="col m-0">
+                                <div class="card  border border-3 rounded-2 shadow p-1 mb-1 bg-white text-dark d-flex justify-content-center align-items-center" style="height:200px;">
+                                    <img src="images/' . $image . '" alt="image" class="card-img-top p-1" style="width:100%;height:100px;" >
+                                    <div class="card-body text-center">
+                                        <p class="card-title">' . $subcatname . '</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </a>';
                     }
-                    echo 
-                    '</div></div>';
-                echo 
-                '</div>';
-            }
-            ?>
+                    echo
+                    '</div>
+                </div>';
+            echo
+            '</div>';
+        }
+        ?>
     </div>
-    <?php require("common/script.php"); require("common/footer.php"); mysqli_close($con);?>
+    <?php 
+    require("common/script.php");
+    require("common/footer.php");
+    mysqli_close($con); 
+    ?>
 </body>
 
 </html>

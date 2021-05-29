@@ -5,8 +5,14 @@ if (!isset($_GET['list'])) {
 }
 require("common/database.php");
 if ($_GET['list'] == 'product') {
-    $subcatid = $_GET['subcatid'];
-    $query = "SELECT * FROM `product` WHERE `subcatid`=$subcatid ORDER BY 'sold'";
+    if($_GET['frompage'] == 'subcategory'){
+        $subcatid = $_GET['subcatid'];
+        $query = "SELECT * FROM `product` WHERE `subcatid`=$subcatid ORDER BY 'sold'";
+    }
+    else if($_GET['frompage'] == 'category'){
+        $catid = $_GET['catid'];
+        $query = "SELECT * FROM `product` WHERE `catid`=$catid ORDER BY 'sold'";
+    }
     $result = mysqli_query($con, $query);
     while ($product = mysqli_fetch_assoc($result)) {
         $pname = $product['productid'];
@@ -21,75 +27,116 @@ if ($_GET['list'] == 'product') {
         $discount = round(($mrp - $price) * 100 / $mrp);
         echo
         '<div class="col p-1">
-                <div class="card border border-3 rounded-2 shadow">
-                <div class="card-header m-1 p-0 shadow bg-white">
-                    <p class="p-0 m-0 text-danger" style="font-size: small; text-align: right;"><marquee direction="right">Get ' . $discount . ' % Off</marquee></p>
+            <div class="card border border-3 rounded-2 shadow">
+                <div class="card-header p-0 shadow">
+                    <p class="p-0 m-0 text-danger" style="font-size: x-small; text-align: right;"><marquee direction="right">Get ' . $discount . ' % Off</marquee></p>
                 </div>
                 <div class="row">
-                    <div class="col col-6 col-lg-12">
+                    <div class="col col-6 ">
                         <img src="images/' . $image . '" class="card-img-top" alt="..." height="100%">
                     </div>
-                    <div class="col col-6 col-lg-12">
+                    <div class="col col-6 ">
                         <h5 style="display: none">' . $pno . '</h5>
                         <h5 style=" display: none">' . $cgst . '</h5>
                         <h5 style="display: none">' . $sgst . '</h5>
                         <h5 style="display: none">' . $pname . '</h5>
                         <h5 style="display: none">' . $mrp . '</h5>
                         <h5 style="display: none">' . $price . '</h5>
-                        <div class="card-body d-flex justify-content-center flex-column p-2">
-                            <h6 class="card-title text-center">' . $pname . '</h6>
-                            <hr>
-                            <p><span>&#8377;</span><strong> ' . $price . ' </strong>';if($price!=$mrp)echo '<small style="font-size: x-small;"><s> ' . $mrp . '</s></small>';echo'</p>
+                        <div class="card-body d-flex justify-content-center flex-column p-1">
+                            <p class="card-title text-center small">' . $pname . '</p>
+                            <p><span>&#8377;</span><strong> ' . $price . ' </strong>';if ($price != $mrp) echo '<small style="font-size: x-small;"><s> ' . $mrp . '</s></small>';echo '</p>
                         </div>
                         <div class="m-0 p-0">
                             <p class="p-0 m-0 text-primary" style="font-size: small; text-align: center;">' . $available . ' Items Available</p>
                         </div>
                         <div class="card-footer">';
-        if ($available > 0) {
-            echo
-            '<div class="row text-center d-flex align-items-center">
-                                <div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
-                                </div>
-                                <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
-                                <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
-                                </div>
-                            </div>';
-        } else {
-            echo '<div class="text-center text-warning">Out of stock</div>';
-        }
-        echo '</div>
+                                if ($available > 0) {
+                                    echo
+                                    '<div class="row text-center d-flex align-items-center">
+                                        <div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
+                                        </div>
+                                        <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
+                                        <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
+                                        </div>
+                                    </div>';
+                                } else {
+                                    echo '<div class="text-center text-warning">Out of stock</div>';
+                                }
+                        echo 
+                        '</div>
                     </div>
                 </div>
-                </div>
-            </div>';
+            </div>
+        </div>';
     }
 } else if ($_GET['list'] == 'subcategory') {
     $catid = $_GET['catid'];
     $query = "SELECT * FROM `subcategory` WHERE `catid`=" . $catid . ";";
     $subcategory = mysqli_query($con, $query);
-    echo "<ul>";
-    while ($subcat = mysqli_fetch_assoc($subcategory)) {
-        $subcatid = $subcat['subcatid'];
-        $subcatname = $subcat['name'];
-        echo '<li><button type="button" class="btn btn-outline-primary w-100 my-1 text-dark" onclick=getproduct(this.value) value=' . $subcatid . '>' . $subcatname . '</button></li>';
+    if($_GET['frompage']=='subcategory'){
+        echo "<ul>";
+        while ($subcat = mysqli_fetch_assoc($subcategory)) {
+            $subcatid = $subcat['subcatid'];
+            $subcatname = $subcat['name'];
+            echo '<li><button type="button" class="btn btn-outline-primary w-100 my-1 text-dark" onclick=getproduct(this.value) value=' . $subcatid . '>' . $subcatname . '</button></li>';
+        }
+        echo "</ul>";
     }
-    echo "</ul>";
+    else if($_GET['frompage']=='category'){
+        while ($subcat = mysqli_fetch_assoc($subcategory)) {
+            $subcatid = $subcat['subcatid'];
+            $subcatname = $subcat['name'];
+            $catid=$subcat['catid'];
+            $image=$subcat['image'];
+            echo
+            '<div class="col m-0">
+                <a href="subcategory.php?subcatid=' . $subcatid . '&catid=' . $catid . '" class="text-decoration-none">
+                <div class="card border border-2 rounded-2 shadow bg-white text-dark text-center" style="height:150px;">
+                    <div class="card-body d-flex justify-content-center align-items-center" style="z-index: 1;">
+                        <h6 class="card-title" style="font-weight: 900">' . $subcatname . '</h6>
+                    </div>
+                    <img src="images/' . $image . '" alt="image" class="card-img p-1" width=100% height=100% style="opacity: 0.6;position: absolute;z-index: 0;">
+                </div>
+                </a>
+            </div>';
+        }
+    }
+    
 } else if ($_GET['list'] == 'subcategoryname') {
     $subcatid = $_GET['subcatid'];
     $query = "SELECT `name` FROM `subcategory` WHERE `subcatid`=" . $subcatid . ";";
     $subcategoryname = mysqli_query($con, $query);
     $subcategoryname = mysqli_fetch_assoc($subcategoryname);
     echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("filter")><h2>' . $subcategoryname['name'] . '</h2></button>';
+} else if ($_GET['list'] == 'categoryname') {
+    $catid = $_GET['catid'];
+    $query = "SELECT `catname` FROM `category` WHERE `catid`=" . $catid . ";";
+    $categoryname = mysqli_query($con, $query);
+    $categoryname = mysqli_fetch_assoc($categoryname);
+    echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("filter")><h2>' . $categoryname['catname'] . '</h2></button>';
 } else if ($_GET['list'] == 'category') {
-    $query = "SELECT * FROM `category`";
-    $category = mysqli_query($con, $query);
-    echo "<ul>";
-    while ($cat = mysqli_fetch_assoc($category)) {
-        $catid = $cat['catid'];
-        $catname = $cat['catname'];
-        echo '<li><button type="button" class="btn btn-outline-success w-100 my-1 text-dark" onclick=getsubcategory(this.value) value=' . $catid . '>' . $catname . '</button></li>';
+    if($_GET['frompage']=='subcategory'){
+        $query = "SELECT * FROM `category`";
+        $category = mysqli_query($con, $query);
+        echo "<ul>";
+        while ($cat = mysqli_fetch_assoc($category)) {
+            $catid = $cat['catid'];
+            $catname = $cat['catname'];
+            echo '<li><button type="button" class="btn btn-outline-success w-100 my-1 text-dark" onclick=getsubcategory(this.value) value=' . $catid . '>' . $catname . '</button></li>';
+        }
+        echo "</ul>";
     }
-    echo "</ul>";
+    else if($_GET['frompage']=='category'){
+        $query = "SELECT * FROM `category`";
+        $category = mysqli_query($con, $query);
+        echo "<ul>";
+        while ($cat = mysqli_fetch_assoc($category)) {
+            $catid = $cat['catid'];
+            $catname = $cat['catname'];
+            echo '<li><button type="button" class="btn btn-outline-success w-100 my-1 text-dark" onclick=getproduct(this.value) value=' . $catid . '>' . $catname . '</button></li>';
+        }
+        echo "</ul>";
+    }
 } else if ($_GET['list'] == 'order') {
     $custid = $_GET['c'];
     $query = "SELECT * FROM `orders` WHERE `custid`=$custid ORDER BY `deliverydate`,`orders`.`orderid`;";

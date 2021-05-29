@@ -187,6 +187,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 
     <title>Products</title>
@@ -198,7 +199,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         <?php echo $responce; ?>
     </div>
 
-    <div class="container text-center small">
+    <div class="text-center small">
         <!-- product table -->
         <div class="shadow border-4 p-2">
             <div class="card my-4 shadow">
@@ -235,7 +236,6 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <table id="producttable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">Catid</th>
                             <th scope="col" style="display: none">SubCatid</th>
                             <th scope="col" style="display: none">Productno</th>
@@ -268,7 +268,6 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <table id="nullproducttable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">Productno</th>
                             <th scope="col">Product Name</th>
                             <th scope="col">Set</th>
@@ -600,41 +599,41 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         function deleteproduct(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('deleteproductno').value = item[3].innerHTML;
-            document.getElementById('deleteproductname').value = item[4].innerHTML;
+            document.getElementById('deleteproductno').value = item[2].innerHTML;
+            document.getElementById('deleteproductname').value = item[3].innerHTML;
         }
 
         function editproduct(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
             console.log(item);
-            document.getElementById('editproductno').value = item[3].innerHTML;
-            document.getElementById('editproductname').value = item[4].innerHTML;
-            document.getElementById('editselectcate').value = item[1].innerHTML;
-            getsubcategorydropdown(item[1].innerHTML, 'eform');
-            document.getElementById('editselectsubcategory').value = item[2].innerHTML;
-            document.getElementById('editoffer').value = item[11].innerHTML;
-            document.getElementById('editpurchaseprice').value = item[5].innerHTML;
-            document.getElementById('editsellprice').value = item[6].innerHTML;
-            document.getElementById('editmrp').value = item[7].innerHTML;
-            document.getElementById('editcgst').value = item[9].innerHTML;
-            document.getElementById('editsgst').value = item[10].innerHTML;
+            document.getElementById('editproductno').value = item[2].innerHTML;
+            document.getElementById('editproductname').value = item[3].innerHTML;
+            document.getElementById('editselectcate').value = item[0].innerHTML;
+            getsubcategorydropdown(item[0].innerHTML, 'eform');
+            document.getElementById('editselectsubcategory').value = item[1].innerHTML;
+            document.getElementById('editoffer').value = item[10].innerHTML;
+            document.getElementById('editpurchaseprice').value = item[4].innerHTML;
+            document.getElementById('editsellprice').value = item[5].innerHTML;
+            document.getElementById('editmrp').value = item[6].innerHTML;
+            document.getElementById('editcgst').value = item[8].innerHTML;
+            document.getElementById('editsgst').value = item[9].innerHTML;
             document.getElementById('editadd').value = 0;
         }
 
         function deletenullproduct(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('deletenullproductno').value = item[1].innerHTML;
-            document.getElementById('deletenullproductname').value = item[2].innerHTML;
+            document.getElementById('deletenullproductno').value = item[0].innerHTML;
+            document.getElementById('deletenullproductname').value = item[1].innerHTML;
         }
 
         function editnullproduct(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
             console.log(item);
-            document.getElementById('editnullproductno').value = item[1].innerHTML;
-            document.getElementById('editnullproductname').value = item[2].innerHTML;
+            document.getElementById('editnullproductno').value = item[0].innerHTML;
+            document.getElementById('editnullproductname').value = item[1].innerHTML;
         }
     </script>
 </body>

@@ -23,7 +23,7 @@ if(!isset($_SESSION['logined']))
 
 <body>
     <?php require("common/navbar.php");  ?>
-    <div class="container text-center small">
+    <div class="text-center small">
         <div id="order" class="border border-4 shadow p-2">
         </div>
         <hr><br>

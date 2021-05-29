@@ -140,7 +140,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
 <body>
     <?php require("common/navbar.php"); ?>
 
-    <div class="container text-center small">
+    <div class="text-center small">
         <div id="alert">
             <?php echo $responce; ?>
         </div>
@@ -160,7 +160,6 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <table id="categorytable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">Catid</th>
                             <th scope="col">Category Name</th>
                             <th scope="col">Description</th>
@@ -170,21 +169,18 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                     </thead>
                     <tbody>
                         <?php
-                        $sno = 1;
                         foreach ($category as $cat) {
                             $catname = $cat['catname'];
                             $catdesc = $cat["catdesc"];
                             $catid = $cat['catid'];
                             echo
                             '<tr>
-                                <td scope="row">' . $sno . '</td>
                                 <td style="display: none">' . $catid . '</td>
                                 <td>' . $catname . '</td>
                                 <td>' . $catdesc . '</td>
                                 <td><button type="button" class="btn btn-success" onclick="editcategory(this)" data-bs-toggle="modal" data-bs-target="#editcategory">Edit Description</button></td>
                                 <td><button type="button" class="btn btn-danger" onclick="deletecategory(this)" data-bs-toggle="modal" data-bs-target="#deletecategory">Delete</button></td>
                             </tr>';
-                            $sno = $sno + 1;
                         }
                         ?>
                     </tbody>
@@ -291,16 +287,16 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         function editcategory(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('editcategoryname').value = item[2].innerHTML;
-            document.getElementById('editcatid').value = item[1].innerHTML;
-            document.getElementById('editcatdesc').value = item[3].innerHTML;
+            document.getElementById('editcategoryname').value = item[1].innerHTML;
+            document.getElementById('editcatid').value = item[0].innerHTML;
+            document.getElementById('editcatdesc').value = item[2].innerHTML;
         }
 
         function deletecategory(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('deletecategoryname').value = item[2].innerHTML;
-            document.getElementById('deletecatid').value = item[1].innerHTML;
+            document.getElementById('deletecategoryname').value = item[1].innerHTML;
+            document.getElementById('deletecatid').value = item[0].innerHTML;
         }
     </script>
 </body>

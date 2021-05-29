@@ -21,7 +21,7 @@ if(!isset($_SESSION['logined']))
 
 <body>
     <?php require("common/navbar.php"); ?>
-    <div class="container text-center small">
+    <div class="text-center small">
         <div class="shadow border border-4 p-2">
             <div class="card my-4 shadow">
                 <div class="card-header">
@@ -32,7 +32,6 @@ if(!isset($_SESSION['logined']))
                 <table id="customertable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">Custid</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>

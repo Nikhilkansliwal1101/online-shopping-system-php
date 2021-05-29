@@ -30,7 +30,7 @@ if(!isset($_SESSION['logined']))
 <body>
     <?php require("common/navbar.php"); ?>
     <div id="alert"></div>
-    <div class="container text-center small">
+    <div class="text-center small">
         <!-- order table -->
         <div id="cart" class="border border-4 p-2 shadow">
             <div class="card p-3 shadow text-center">
@@ -89,7 +89,6 @@ if(!isset($_SESSION['logined']))
                 <table id="producttable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">Productno</th>
                             <th scope="col" style="display: none">CGST</th>
                             <th scope="col" style="display: none">SGST</th>

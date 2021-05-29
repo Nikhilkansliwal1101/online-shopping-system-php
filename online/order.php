@@ -16,8 +16,8 @@ session_start();
 
 <body>
     <?php require("common/navbar.php"); ?>
-    <div class="container small mb-5">
-        <div id="cart" class="border border-4 p-2 shadow">
+    <div class="small mb-5">
+        <div id="cart" class="border border-4 p-1 shadow">
             <div class="card p-3 shadow text-center">
                 <div class="card-header">
                     <h1>Your Cart</h1>

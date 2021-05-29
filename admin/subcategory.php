@@ -184,7 +184,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         <?php echo $responce; ?>
     </div>
 
-    <div class="container text-center small">
+    <div class="text-center small">
         <!-- subcategory table -->
         <div class="shadow border-4 p-2">
             <div class="card my-4 shadow">
@@ -213,11 +213,10 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <table id="subcategorytable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">Catid</th>
                             <th scope="col">Category</th>
                             <th scope="col" style="display: none">SubCatid</th>
-                            <th scope="col">Subcategory Name</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Change category</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -240,9 +239,8 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <table id="nullcatsubcategorytable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
-                            <th scope="col">SNo.</th>
                             <th scope="col" style="display: none">SubCatid</th>
-                            <th scope="col">Subcategory Name</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Set category</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -466,31 +464,31 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         function editsubcategory(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('editsubcatname').value = item[4].innerHTML;
-            document.getElementById('editsubcatid').value = item[3].innerHTML;
-            document.getElementById('editsubtablecatid').value = item[1].innerHTML;
+            document.getElementById('editsubcatname').value = item[3].innerHTML;
+            document.getElementById('editsubcatid').value = item[2].innerHTML;
+            document.getElementById('editsubtablecatid').value = item[0].innerHTML;
         }
 
         function deletesubcategory(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('deletecategorynameofsubcategory').value = item[2].innerHTML;
-            document.getElementById('deletesubcategoryname').value = item[4].innerHTML;
-            document.getElementById('deletesubcatid').value = item[3].innerHTML;
+            document.getElementById('deletecategorynameofsubcategory').value = item[1].innerHTML;
+            document.getElementById('deletesubcategoryname').value = item[3].innerHTML;
+            document.getElementById('deletesubcatid').value = item[2].innerHTML;
         }
 
         function editnullcatsubcategory(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('editnullcatsubcatname').value = item[2].innerHTML;
-            document.getElementById('editnullcatsubcatid').value = item[1].innerHTML;
+            document.getElementById('editnullcatsubcatname').value = item[1].innerHTML;
+            document.getElementById('editnullcatsubcatid').value = item[0].innerHTML;
         }
 
         function deletenullcatsubcategory(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('deletenullcatsubcategoryname').value = item[2].innerHTML;
-            document.getElementById('deletenullcatsubcatid').value = item[1].innerHTML;
+            document.getElementById('deletenullcatsubcategoryname').value = item[1].innerHTML;
+            document.getElementById('deletenullcatsubcatid').value = item[0].innerHTML;
         }
     </script>
 </body>

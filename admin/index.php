@@ -24,7 +24,7 @@ if(!isset($_SESSION['logined']))
 
 <body>
     <?php require("common/navbar.php") ?>
-    <div class="container">
+    <div>
         <div class="card-group row row-cols-1 row-cols-md-2 g-0 d-flex justify-content-around align-items-center">
             <a href="category.php" class="text-decoration-none">
                 <div class="col m-3">

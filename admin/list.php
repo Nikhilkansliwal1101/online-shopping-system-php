@@ -8,20 +8,17 @@ if ($_GET['list'] == 'subcat') {
     }
     $subcategory = mysqli_query($con, $query);
     $subcategory = mysqli_fetch_all($subcategory, MYSQLI_ASSOC);
-    $sno = 1;
     if (isset($_GET['table'])) {
         foreach ($subcategory as $subcat) {
             echo
             '<tr>
-            <td scope="row">' . $sno . '</td>
             <td style="display: none">' . $subcat['catid'] . '</td>
             <td>' . $subcat['catname'] . '</td>
             <td style="display: none">' . $subcat['subcatid'] . '</td>
             <td>' . $subcat['name'] . '</td>
             <td><button type="button" class="btn btn-success" onclick="editsubcategory(this)" data-bs-toggle="modal" data-bs-target="#editsubcat">Change category</button></td>
-            <td><button type="button" class="btn btn-danger" onclick="deletesubcategory(this)" data-bs-toggle="modal" data-bs-target="#deletesubcategory">Delete</button></td>
+            <td><button type="button" class="btn btn-danger" onclick="deletesubcategory(this)" data-bs-toggle="modal" data-bs-target="#deletesubcategory"><span class="material-icons">delete</span></button></td>
             </tr>';
-            $sno = $sno + 1;
         }
     } else if (isset($_GET['dropdown'])) {
         foreach ($subcategory as $subcat) {
@@ -32,17 +29,14 @@ if ($_GET['list'] == 'subcat') {
     $query = "SELECT * FROM `subcategory` WHERE `catid` is NULL";
     $subcategory = mysqli_query($con, $query);
     $subcategory = mysqli_fetch_all($subcategory, MYSQLI_ASSOC);
-    $sno = 1;
     foreach ($subcategory as $subcat) {
         echo
         '<tr>
-        <td scope="row">' . $sno . '</td>
         <td style="display: none">' . $subcat['subcatid'] . '</td>
         <td>' . $subcat['name'] . '</td>
         <td><button type="button" class="btn btn-success" onclick="editnullcatsubcategory(this)" data-bs-toggle="modal" data-bs-target="#editnullcatsubcat">Set category</button></td>
         <td><button type="button" class="btn btn-danger" onclick="deletenullcatsubcategory(this)" data-bs-toggle="modal" data-bs-target="#deletenullcatsubcategory">Delete</button></td>
         </tr>';
-        $sno = $sno + 1;
     }
 } else if (isset($_GET['subcatid']) && ($_GET['list'] == 'product')) {
     if (!substr_compare($_GET['subcatid'], "cat", 0, 3)) {
@@ -57,11 +51,9 @@ if ($_GET['list'] == 'subcat') {
     }
     $products = mysqli_query($con, $query);
     $products = mysqli_fetch_all($products, MYSQLI_ASSOC);
-    $sno = 1;
     foreach ($products as $product) {
         echo
         '<tr>
-        <td scope="row">' . $sno . '</td>
         <td style="display: none">' . $product['catid'] . '</td>
         <td style="display: none">' . $product['subcatid'] . '</td>
         <td style="display: none">' . $product['productno'] . '</td>
@@ -73,26 +65,22 @@ if ($_GET['list'] == 'subcat') {
         <td>' . $product['cgst'] . '</td>
         <td>' . $product['sgst'] . '</td>
         <td>' . $product['offer'] . '</td>
-        <td class="d-flex align-items-center"><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editproduct" onclick="editproduct(this)">Edit</button>
-        <button type="button" class="btn btn-danger" onclick="deleteproduct(this)" data-bs-toggle="modal" data-bs-target="#deleteproduct">Delete</button></td>
+        <td><button type="button" class="btn btn-success py-1" data-bs-toggle="modal" data-bs-target="#editproduct" onclick="editproduct(this)"><span class="material-icons">edit</span></button>
+        <button type="button" class="btn btn-danger py-1" onclick="deleteproduct(this)" data-bs-toggle="modal" data-bs-target="#deleteproduct"><span class="material-icons">delete</span></button></td>
         </tr>';
-        $sno = $sno + 1;
     }
 } else if ($_GET['list'] == 'nullproduct') {
     $query = "SELECT * FROM `product` WHERE (`catid` IS NULL) OR (`subcatid` IS NULL);";
     $products = mysqli_query($con, $query);
     $products = mysqli_fetch_all($products, MYSQLI_ASSOC);
-    $sno = 1;
     foreach ($products as $product) {
         echo
         '<tr>
-        <td scope="row">' . $sno . '</td>
         <td style="display: none">' . $product['productno'] . '</td>
         <td>' . $product['productid'] . '</td>
-        <td class="d-flex align-items-center"><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editnullproduct" onclick="editnullproduct(this)">Edit</button></td>
-        <td><button type="button" class="btn btn-danger py-0" onclick="deletenullproduct(this)" data-bs-toggle="modal" data-bs-target="#deletenullproduct">Delete</button></td>
+        <td class="d-flex align-items-center"><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editnullproduct" onclick="editnullproduct(this)"><span class="material-icons">edit</span></button></td>
+        <td><button type="button" class="btn btn-danger py-0" onclick="deletenullproduct(this)" data-bs-toggle="modal" data-bs-target="#deletenullproduct"><span class="material-icons">delete</span></button></td>
         </tr>';
-        $sno = $sno + 1;
     }
 } else if ($_GET['list'] == 'order') {
     $query = "SELECT * FROM `orders` AS o,`customer` AS c WHERE `o`.`custid`=`c`.`custid` ORDER BY `o`.`status` DESC, `o`.`orderid` ;";
@@ -225,26 +213,26 @@ if ($_GET['list'] == 'subcat') {
         <tr>
             <td></td>
             <td>CGST:</td>
-            <td>' . $total_cgst . '</td>
+            <td><span>&#8377; </span>' . $total_cgst . '</td>
             <td></td>
             <td>Total: </td>
-            <td>' . $total_mrp . '</td>
+            <td><span>&#8377; </span>' . $total_mrp . '</td>
         </tr>
         <tr>
             <td></td>
             <td>SGST:</td>
-            <td>' . $total_sgst . '</td>
+            <td><span>&#8377; </span>' . $total_sgst . '</td>
             <td></td>
             <td>DISC:</td>
-            <td>' . $total_disc . '</td>
+            <td><span>&#8377; </span>' . $total_disc . '</td>
         </tr>
         <tr>
             <td></td>
             <td>TOTAL:</td>
-            <td>' . ($total_cgst + $total_sgst) . '</td>
+            <td><span>&#8377; </span>' . ($total_cgst + $total_sgst) . '</td>
             <td></td>
             <td>NET AMT:</td>
-            <td>' . $total_amt . '</td>
+            <td><span>&#8377; </span>' . $total_amt . '</td>
         </tr>
     </tfoot>
     </table>
@@ -254,11 +242,9 @@ if ($_GET['list'] == 'subcat') {
     $query = "SELECT custid,name,email,mobile,address,city,pincode FROM `customer`";
     $customers = mysqli_query($con, $query);
     $customers = mysqli_fetch_all($customers, MYSQLI_ASSOC);
-    $sno = 1;
     foreach ($customers as $customer) {
         echo
         '<tr>
-        <td scope="row">' . $sno . '</td>
         <td style="display: none">' . $customer['custid'] . '</td>
         <td>' . $customer['name'] . '</td>
         <td>' . $customer['email'] . '</td>
@@ -267,17 +253,14 @@ if ($_GET['list'] == 'subcat') {
         <td>' . $customer['pincode'] . '</td>
         <td>' . $customer['city'] . '</td>
         </tr>';
-        $sno = $sno + 1;
     }
 } else if ($_GET['list'] == 'allproduct') {
     $query = "SELECT * FROM `product`";
     $products = mysqli_query($con, $query);
     $products = mysqli_fetch_all($products, MYSQLI_ASSOC);
-    $sno = 1;
     foreach ($products as $product) {
         echo
         '<tr>
-        <td scope="row">' . $sno . '</td>
         <td style="display: none"><h5>' . $product['productno'] . '</h5></td>
         <td style="display: none"><h5>' . $product['cgst'] . '</h5></td>
         <td style="display: none"><h5>' . $product['sgst'] . '</h5></td>
@@ -294,7 +277,6 @@ if ($_GET['list'] == 'subcat') {
                 </div>
             </div>
         </td>';
-        $sno = $sno + 1;
     }
 } else if ($_GET['list'] == 'orderdelivred') {
     $orderid = $_GET['orderid'];

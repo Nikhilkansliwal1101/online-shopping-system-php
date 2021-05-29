@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
-    header("Location: index.php");
-    die();
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -31,39 +28,41 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
 <body>
     <?php require("common/navbar.php"); ?>
     <div class="mb-5">
-        <div class="row">
-            <div id="subcategoryname" class="m-0 p-0">
+        <div>
+            <div id="categoryname" class="m-0 p-0">
             </div>
-            <div id="filter" class="d-none row m-0 p-1">
-                <div class="col-md-6">
-                    <div>
-                        <h2>Select Category</h2>
-                    </div>
-                    <div id="category"></div>
+            <div id="filter" class="d-none m-0 p-0">
+                <div>
+                    <h2>Select Category</h2>
                 </div>
-                <div class="col-md-6">
-                    <div>
-                        <h2>Select subcategory</h2>
-                    </div>
-                    <div id="subcategory"></div>
+                <div id="category">
                 </div>
             </div>
-
         </div>
+        <div class="border border-3 rounded-2 shadow p-1 d-flex justify-content-center align-items-center flex-column">
+            <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+                <h4>-: Shop By Category :-</h4>
+            </div>
+            <div id="subcategory" class="card-group row row-cols-3 row-cols-md-4 row-cols-lg-6 g-0 m-2 w-100">
+            </div>
+        </div>
+
         <div class="card-group card-deck row row-cols-1 row-cols-md-2 row-cols-lg-4 text-center d-flex justify-content-around p-2 m-0"
             id="product">
         </div>
     </div>
 
-    <?php require("common/script.php"); require("common/footer.php"); ?>
+    <?php 
+    require("common/script.php"); 
+    require("common/footer.php"); 
+    ?>
 
 
     <script>
     $(document).ready(function() {
         getcategory();
         toggledisplay('filter');
-        getproduct(<?php echo $_GET['subcatid'] ?>);
-        getsubcategory(<?php echo $_GET['catid'] ?>);
+        getproduct(<?php echo $_GET['catid'] ?>);
     });
 
 
@@ -118,7 +117,7 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
         addproduct(item.parentNode);
     }
 
-    function getproduct(subcatid) {
+    function getproduct(catid) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -126,8 +125,9 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
                 toggledisplay('filter');
             }
         };
-        getsubcategoryname(subcatid);
-        xhttp.open("GET", "list.php?list=product&frompage=subcategory&subcatid=" + subcatid, true);
+        getcategoryname(catid);
+        getsubcategory(catid);
+        xhttp.open("GET", "list.php?list=product&frompage=category&catid=" + catid, true);
         xhttp.send();
     }
 
@@ -138,18 +138,18 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
                 document.getElementById("subcategory").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "list.php?list=subcategory&frompage=subcategory&catid=" + catid, true);
+        xhttp.open("GET", "list.php?list=subcategory&frompage=category&catid=" + catid, true);
         xhttp.send();
     }
 
-    function getsubcategoryname(subcatid) {
+    function getcategoryname(catid) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("subcategoryname").innerHTML = this.responseText;
+                document.getElementById("categoryname").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "list.php?list=subcategoryname&subcatid=" + subcatid, true);
+        xhttp.open("GET", "list.php?list=categoryname&catid=" + catid, true);
         xhttp.send();
     }
 
@@ -160,7 +160,7 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
                 document.getElementById("category").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "list.php?list=category&frompage=subcategory", true);
+        xhttp.open("GET", "list.php?list=category&frompage=category", true);
         xhttp.send();
     }
     </script>

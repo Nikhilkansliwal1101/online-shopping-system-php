@@ -24,8 +24,11 @@ if(!isset($_SESSION['adminid']))
 
 <body>
     <?php require("common/navbar.php") ?>
-    <div>
-        <div class="card-group row row-cols-1 row-cols-md-2 g-0 d-flex justify-content-around align-items-center">
+    <div class="border border-3 rounded-2 shadow p-1">
+        <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+            <h4>-: Manage Products :-</h4>
+        </div>
+        <div class="card-group row row-cols-1 row-cols-md-2 row-cols-lg-3 g-0 d-flex justify-content-around align-items-center">
             <a href="category.php" class="text-decoration-none">
                 <div class="col m-3">
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
@@ -77,22 +80,13 @@ if(!isset($_SESSION['adminid']))
                     </div>
                 </div>
             </a>
-            <a href="orders.php" class="text-decoration-none">
-                <div class="col m-3">
-                    <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
-                        <div class="row g-0">
-                            <div class="col-6">
-                                <img src="../online/images/order.jfif" alt="image" style="width:100%;height:200px;">
-                            </div>
-                            <div class="col-6 text-dark d-flex justify-content-center align-items-center">
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Orders</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        </div>
+    </div>
+    <div class="border border-3 rounded-2 shadow p-1">
+        <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+            <h4>-: Customer :-</h4>
+        </div>
+        <div class="card-group row row-cols-1 row-cols-md-2 row-cols-lg-3 g-0 d-flex justify-content-around align-items-center">
             <a href="customer.php" class="text-decoration-none">
                 <div class="col m-3">
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
@@ -103,6 +97,100 @@ if(!isset($_SESSION['adminid']))
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Know your Customers</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="border border-3 rounded-2 shadow p-1">
+        <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+            <h4>-: Order :-</h4>
+        </div>
+        <div class="card-group row row-cols-1 row-cols-md-2 row-cols-lg-3 g-0 d-flex justify-content-around align-items-center">
+            <a href="orders.php" class="text-decoration-none">
+                <div class="col m-3">
+                    <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
+                        <div class="row g-0">
+                            <div class="col-6">
+                                <img src="../online/images/order.jfif" alt="image" style="width:100%;height:200px;">
+                            </div>
+                            <div class="col-6 text-dark d-flex justify-content-center align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Order List</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="neworder.php" class="text-decoration-none">
+                <div class="col m-3">
+                    <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
+                        <div class="row g-0">
+                            <div class="col-6">
+                                <img src="../online/images/placeneworder.png" alt="image" style="width:100%;height:200px;">
+                            </div>
+                            <div class="col-6 text-dark d-flex justify-content-center align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Place New Order For Customer</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="border border-3 rounded-2 shadow p-1">
+        <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+            <h4>-: Supplier :-</h4>
+        </div>
+        <div class="card-group row row-cols-1 row-cols-md-2 row-cols-lg-3 g-0 d-flex justify-content-around align-items-center">
+            <a href="suppliers.php" class="text-decoration-none">
+                <div class="col m-3">
+                    <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
+                        <div class="row g-0">
+                            <div class="col-6">
+                                <img src="../online/images/placeorder.png" alt="image" style="width:100%;height:200px;">
+                            </div>
+                            <div class="col-6 text-dark d-flex justify-content-center align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Make order of prducts to supplier</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="payment.php" class="text-decoration-none">
+                <div class="col m-3">
+                    <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
+                        <div class="row g-0">
+                            <div class="col-6">
+                                <img src="../online/images/paymoney.png" alt="image" style="width:100%;height:200px;">
+                            </div>
+                            <div class="col-6 text-dark d-flex justify-content-center align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Pay and status of order</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="addnewsupplier.php" class="text-decoration-none">
+                <div class="col m-3">
+                    <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
+                        <div class="row g-0">
+                            <div class="col-6">
+                                <img src="../online/images/addnewsupplier.png" alt="image" style="width:100%;height:200px;">
+                            </div>
+                            <div class="col-6 text-dark d-flex justify-content-center align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Add New Supplier</h5>
                                 </div>
                             </div>
                         </div>

@@ -11,7 +11,7 @@ if ($_GET['list'] == 'product') {
     }
     else if($_GET['frompage'] == 'category'){
         $catid = $_GET['catid'];
-        $query = "SELECT * FROM `product` WHERE `catid`=$catid ORDER BY 'sold'";
+        $query = "SELECT * FROM `product` WHERE `subcatid` IN (SELECT `subcatid` FROM `subcategory` where `catid`=$catid) ORDER BY 'sold'";
     }
     $result = mysqli_query($con, $query);
     while ($product = mysqli_fetch_assoc($result)) {
@@ -43,25 +43,27 @@ if ($_GET['list'] == 'product') {
                         <h5 style="display: none">' . $mrp . '</h5>
                         <h5 style="display: none">' . $price . '</h5>
                         <div class="card-body d-flex justify-content-center flex-column p-1">
-                            <p class="card-title text-center small">' . $pname . '</p>
+                            <p class="card-title text-center small text-nowrap overflow-hidden" style="  text-overflow:ellipsis;">' . $pname . '</p>
                             <p><span>&#8377;</span><strong> ' . $price . ' </strong>';if ($price != $mrp) echo '<small style="font-size: x-small;"><s> ' . $mrp . '</s></small>';echo '</p>
                         </div>
                         <div class="m-0 p-0">
                             <p class="p-0 m-0 text-primary" style="font-size: small; text-align: center;">' . $available . ' Items Available</p>
                         </div>
-                        <div class="card-footer">';
-                                if ($available > 0) {
-                                    echo
-                                    '<div class="row text-center d-flex align-items-center">
-                                        <div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
-                                        </div>
-                                        <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
-                                        <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
-                                        </div>
-                                    </div>';
-                                } else {
-                                    echo '<div class="text-center text-warning">Out of stock</div>';
-                                }
+                        <div class="card-footer">
+                            <div class="row text-center d-flex align-items-center">';
+                            if ($available > 0) {
+                                echo
+                                '<div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
+                                </div>
+                                <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
+                                <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
+                                </div>';
+                            } else {
+                                echo 
+                                '<div class="col-12 m-0 p-1"><button type="button" class="btn btn-outline-warning" style="width: 100%">Out Of Stock</button></div>';
+                            }
+                            echo 
+                            '</div>';
                         echo 
                         '</div>
                     </div>

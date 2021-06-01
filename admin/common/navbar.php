@@ -11,26 +11,46 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Change Option
+                        Manage
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="category.php">Manage Category</a></li>
                         <li><a class="dropdown-item" href="subcategory.php">Manage Subcategory</a></li>
                         <li><a class="dropdown-item" href="product.php">Manage Products</a></li>
-                        <li><a class="dropdown-item" href="customer.php">Know your Customers</a></li>
-                        <li><a class="dropdown-item" href="orders.php">Orders</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " tabindex="-1" href="neworder.php">Place Order</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Customer
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="customer.php">Know your Customers</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Order
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="orders.php">Orders</a></li>
+                        <li><a class="dropdown-item" href="neworder.php">Place New Order</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Supplier
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="suppliers.php">Order Products</a></li>
+                        <li><a class="dropdown-item" href="payment.php">Payment</a></li>
+                        <li><a class="dropdown-item" href="addnewsupplier.php">Add New Supplier</a></li>
+                    </ul>
                 </li>
             </ul>
             <div class="d-flex">
                 <?php
-                if (isset($_SESSION['logined'])) {
-                    if ($_SESSION['status'] == 1) {
-                        echo '<a href="addnewadmin.php"><button class="btn btn-outline-success mx-2" type="button">Add Admin</button></a>';
-                    }
+                if (isset($_SESSION['adminid'])) {
                     echo '<a href="profile.php"><button class="btn btn-outline-success mx-2" type="button" name="profile">Profile</button></a>
                     <a href="logout.php"><button class="btn btn-outline-danger mx-2" type="button" name="logout">Logout</button></a>';
                 } else {
@@ -41,7 +61,7 @@
     </div>
 </nav>
 <?php
-if (!isset($_SESSION['logined'])) {
+if (!isset($_SESSION['adminid'])) {
     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Alert ! </strong> Login to continue
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

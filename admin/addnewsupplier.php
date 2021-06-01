@@ -1,10 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['logined'])) {
+if (!isset($_SESSION['adminid'])) {
     header("Location: login.php");
-    die();
-} else if ($_SESSION['status'] == 0) {
-    header("Location: index.php");
     die();
 }
 $responce = "";
@@ -19,7 +16,7 @@ if (isset($_POST["submit"])) {
     $pass = rand();
     $hash = password_hash($pass, PASSWORD_DEFAULT);
 
-    $query = "INSERT INTO `admin` (`adminid`, `name`, `mobile`, `email`, `password`, `status`) VALUES (NULL,'$name', '$mobile', '$email','$hash', '$status');";
+    $query = "INSERT INTO `supplier` (`supplierid`, `name`, `mobile`, `email`, `password`) VALUES (NULL,'$name', '$mobile', '$email','$hash');";
     $result = mysqli_query($con, $query);
     if ($result) {
         $responce =
@@ -44,7 +41,7 @@ if (isset($_POST["submit"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
+    <title>Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 
@@ -54,7 +51,7 @@ if (isset($_POST["submit"])) {
         <?php echo $responce; ?>
     </div>
     <div class="container border border-4 shadow p-3" style="max-width: 600px">
-        <h2>Add New admin</h2>
+        <h2>Add New Supplier</h2>
         <hr>
         <form class="row g-3" method="post" action="addnewadmin.php">
             <div class="col-12">
@@ -68,13 +65,6 @@ if (isset($_POST["submit"])) {
             <div class="col-12">
                 <label for="Email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="Email" name="email" required>
-            </div>
-            <div class="col-12">
-                <label for="Status" class="form-label">Status</label>
-                <select id="Status" class="form-select" name="status" required>
-                    <option value="0">status 0</option>
-                    <option value="1">status 1</option>
-                </select>
             </div>
             <div class="col-12">
                 <br>

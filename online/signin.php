@@ -1,5 +1,10 @@
 <?php
 session_start();
+if(isset($_SESSION['custid']))
+{
+    header("Location: profile.php");
+    die();
+}
 $responce = "";
 require("common/database.php");
 
@@ -21,12 +26,11 @@ if (isset($_POST["submit"])) {
     $query = "INSERT INTO `customer` (`custid`, `name`, `email`, `password`, `mobile`, `address`, `city`, `state`, `pincode`, `date`) VALUES (NULL,'$name', '$email','$hash', '$mobile', '$address', '$city', '$state', '$pincode', current_timestamp());";
     $result = mysqli_query($con, $query);
     if ($result) {
-        $_SESSION['alreadyexists'] = 1;
         unset($_SESSION['otpsent']);
         unset($_SESSION['emailvarified']);
         unset($_SESSION['email']);
         unset($_SESSION['sendotp']);
-        header("Location: login.php");
+        header("Location: login.php?alreadyexist=1");
         die();
     } else {
         $responce =
@@ -53,8 +57,7 @@ if (isset($_POST['sendotp'])) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
     } else {
-        $_SESSION['alreadyexists'] = 1;
-        header("Location: login.php");
+        header("Location: login.php?alreadyexist=1");
         die();
     }
 }

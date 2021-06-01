@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['logined']))
+if(!isset($_SESSION['adminid']))
 {
     header("Location: index.php");
 }
@@ -172,8 +172,10 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <title>Subcategories</title>
 </head>
@@ -186,30 +188,34 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
 
     <div class="text-center small">
         <!-- subcategory table -->
-        <div class="shadow border-4 p-2">
+        <div>
             <div class="card my-4 shadow">
                 <div class="card-header">
                     <h1>Subcategories</h1>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addsubcat">
-                        Add New subcategory
-                    </button>
-                </div>
-                <div class="card-body">
-                    <label for="selectcat" class="form-label">Select category</label>
-                    <select id="selectcat" class="form-select" aria-label="Default select example" onchange="getsubcategorytable(this.value)">
-                        <?php
+                    <div>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#addsubcat">
+                            Add New subcategory
+                        </button>
+                    </div>
+                    <div>
+                        <label for="selectcat" class="form-label">Select category</label>
+                        <select id="selectcat" class="form-select" aria-label="Default select example"
+                            onchange="getsubcategorytable(this.value)">
+                            <?php
                         echo "<option selected>Select category</option>";
                         echo "<option value=0>All categories</option>";
                         foreach ($category as $cat) {
                             echo "<option value=" . $cat['catid'] . ">" . $cat['catname'] . "</option>";
                         }
                         ?>
-                    </select>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="table-responsive mw-100">
+            <div class="table-responsive">
                 <table id="subcategorytable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
@@ -217,8 +223,8 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                             <th scope="col">Category</th>
                             <th scope="col" style="display: none">SubCatid</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Change category</th>
-                            <th scope="col">Delete</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody id="subcat">
@@ -229,13 +235,13 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         </div>
 
         <!-- NULL category subcategory table -->
-        <div class="shadow border-4 p-2" id="nullcat">
+        <div>
             <div class="card my-4 shadow">
                 <div class="card-header">
                     <h1>Subcategories with No category</h1>
                 </div>
             </div>
-            <div class="table-responsive mw-100">
+            <div class="table-responsive">
                 <table id="nullcatsubcategorytable" class="table table-striped table-hover table-bordered text-wrap">
                     <thead>
                         <tr>
@@ -303,11 +309,13 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                             <input type="text" class="form-control" id="editsubcatname" name="editsubcatname" readonly>
                         </div>
                         <div class="mb-3 d-none">
-                            <input type="text" class="form-control" id="editsubcatid" name="editsubcatid" style="display: none">
+                            <input type="text" class="form-control" id="editsubcatid" name="editsubcatid"
+                                style="display: none">
                         </div>
                         <div class="mb-3 col-12">
                             <label for="editsubtablecatid" class="form-label">Change Category name</label>
-                            <select class="form-select" aria-label="Default select example" id="editsubtablecatid" name="editsubtablecatid">
+                            <select class="form-select" aria-label="Default select example" id="editsubtablecatid"
+                                name="editsubtablecatid">
                                 <?php
                                 foreach ($category as $cat) {
                                     echo "<option value=" . $cat['catid'] . ">" . $cat['catname'] . "</option>";
@@ -323,7 +331,8 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     </div>
 
     <!-- modal foe deleting subcategory-->
-    <div class="modal fade" id="deletesubcategory" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal fade" id="deletesubcategory" tabindex="-1" aria-labelledby="exampleModalLabel3"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -333,15 +342,18 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <div class="modal-body">
                     <form method="post" action="subcategory.php" enctype="multipart/form-data" class="row g-3">
                         <div class="mb-3 d-none">
-                            <input type="text" class="form-control" id="deletesubcatid" name="deletesubcatid" style="display: none">
+                            <input type="text" class="form-control" id="deletesubcatid" name="deletesubcatid"
+                                style="display: none">
                         </div>
                         <div class="mb-3 col-12">
                             <label for="deletecategorynameofsubcategory" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="deletecategorynameofsubcategory" name="deletecategorynameofsubcategory" readonly>
+                            <input type="text" class="form-control" id="deletecategorynameofsubcategory"
+                                name="deletecategorynameofsubcategory" readonly>
                         </div>
                         <div class="mb-3 col-12">
                             <label for="deletesubcategoryname" class="form-label">Subcategory</label>
-                            <input type="text" class="form-control" id="deletesubcategoryname" name="deletesubcategoryname" readonly>
+                            <input type="text" class="form-control" id="deletesubcategoryname"
+                                name="deletesubcategoryname" readonly>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Please Press Delete subcategory to
@@ -356,7 +368,8 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     </div>
 
     <!-- model for updating nullcatsubcategory -->
-    <div class="modal fade" id="editnullcatsubcat" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+    <div class="modal fade" id="editnullcatsubcat" tabindex="-1" aria-labelledby="exampleModalLabel4"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -367,14 +380,17 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                     <form method="post" action="subcategory.php" enctype="multipart/form-data" class="row g-3">
                         <div class="mb-3 col-12">
                             <label for="editnullcatsubcatname" class="form-label">Sub Category Name</label>
-                            <input type="text" class="form-control" id="editnullcatsubcatname" name="editnullcatsubcatname" readonly>
+                            <input type="text" class="form-control" id="editnullcatsubcatname"
+                                name="editnullcatsubcatname" readonly>
                         </div>
                         <div class="mb-3 col-12">
-                            <input type="text" class="form-control" id="editnullcatsubcatid" name="editnullcatsubcatid" style="display: none">
+                            <input type="text" class="form-control" id="editnullcatsubcatid" name="editnullcatsubcatid"
+                                style="display: none">
                         </div>
                         <div class="mb-3 col-12">
                             <label for="editsubtablecatid" class="form-label">Set Category name</label>
-                            <select class="form-select" aria-label="Default select example" id="editnullcatsubtablecatid" name="editnullcatsubtablecatid">
+                            <select class="form-select" aria-label="Default select example"
+                                id="editnullcatsubtablecatid" name="editnullcatsubtablecatid">
                                 <?php
                                 foreach ($category as $cat) {
                                     echo "<option value=" . $cat['catid'] . ">" . $cat['catname'] . "</option>";
@@ -390,7 +406,8 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     </div>
 
     <!-- modal for0 deleting nullcatsubcategory-->
-    <div class="modal fade" id="deletenullcatsubcategory" tabindex="-1" aria-labelledby="exampleModalLabel5" aria-hidden="true">
+    <div class="modal fade" id="deletenullcatsubcategory" tabindex="-1" aria-labelledby="exampleModalLabel5"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -400,11 +417,13 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 <div class="modal-body">
                     <form method="post" action="subcategory.php" enctype="multipart/form-data" class="row g-3">
                         <div class="mb-3 d-none">
-                            <input type="text" class="form-control" id="deletenullcatsubcatid" name="deletenullcatsubcatid" style="display: none">
+                            <input type="text" class="form-control" id="deletenullcatsubcatid"
+                                name="deletenullcatsubcatid" style="display: none">
                         </div>
                         <div class="mb-3 col-12">
                             <label for="deletenullcatsubcategoryname" class="form-label">Subcategory</label>
-                            <input type="text" class="form-control" id="deletenullcatsubcategoryname" name="deletenullcatsubcategoryname" readonly>
+                            <input type="text" class="form-control" id="deletenullcatsubcategoryname"
+                                name="deletenullcatsubcategoryname" readonly>
                         </div>
                         <div class="mb-3 col-12">
                             <label class="form-label">Please Press Delete subcategory to
@@ -422,74 +441,74 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js">
     </script>
     <script>
-        $(document).ready(function() {
-            $('#subcategorytable').DataTable();
-            $('#nullcatsubcategorytable').DataTable();
-            getsubcategorytable(0);
-            getnullcatsubcategorytable();
-        });
+    $(document).ready(function() {
+        $('#subcategorytable').DataTable();
+        $('#nullcatsubcategorytable').DataTable();
+        getsubcategorytable(0);
+        getnullcatsubcategorytable();
+    });
 
-        function getsubcategorytable(catid) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+    function getsubcategorytable(catid) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
 
-                if (this.readyState == 4 && this.status == 200) {
-                    var table = $('#subcategorytable').DataTable();
-                    table.destroy();
-                    document.getElementById("subcat").innerHTML =
-                        this.responseText;
-                    $('#subcategorytable').DataTable();
-                }
-            };
-            xhttp.open("GET", "list.php?list=subcat&table=1&catid=" + catid, true);
-            xhttp.send();
-        }
+            if (this.readyState == 4 && this.status == 200) {
+                var table = $('#subcategorytable').DataTable();
+                table.destroy();
+                document.getElementById("subcat").innerHTML =
+                    this.responseText;
+                $('#subcategorytable').DataTable();
+            }
+        };
+        xhttp.open("GET", "list.php?list=subcat&table=1&catid=" + catid, true);
+        xhttp.send();
+    }
 
-        function getnullcatsubcategorytable() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+    function getnullcatsubcategorytable() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
 
-                if (this.readyState == 4 && this.status == 200) {
-                    var table = $('#nullcatsubcategorytable').DataTable();
-                    table.destroy();
-                    document.getElementById("nullcatsubcat").innerHTML =
-                        this.responseText;
-                    $('#nullcatsubcategorytable').DataTable();
-                }
-            };
-            xhttp.open("GET", "list.php?list=nullsubcat", true);
-            xhttp.send();
-        }
+            if (this.readyState == 4 && this.status == 200) {
+                var table = $('#nullcatsubcategorytable').DataTable();
+                table.destroy();
+                document.getElementById("nullcatsubcat").innerHTML =
+                    this.responseText;
+                $('#nullcatsubcategorytable').DataTable();
+            }
+        };
+        xhttp.open("GET", "list.php?list=nullsubcat", true);
+        xhttp.send();
+    }
 
-        function editsubcategory(item) {
-            item = item.parentNode.parentNode;
-            item = item.getElementsByTagName('td');
-            document.getElementById('editsubcatname').value = item[3].innerHTML;
-            document.getElementById('editsubcatid').value = item[2].innerHTML;
-            document.getElementById('editsubtablecatid').value = item[0].innerHTML;
-        }
+    function editsubcategory(item) {
+        item = item.parentNode.parentNode;
+        item = item.getElementsByTagName('td');
+        document.getElementById('editsubcatname').value = item[3].innerHTML;
+        document.getElementById('editsubcatid').value = item[2].innerHTML;
+        document.getElementById('editsubtablecatid').value = item[0].innerHTML;
+    }
 
-        function deletesubcategory(item) {
-            item = item.parentNode.parentNode;
-            item = item.getElementsByTagName('td');
-            document.getElementById('deletecategorynameofsubcategory').value = item[1].innerHTML;
-            document.getElementById('deletesubcategoryname').value = item[3].innerHTML;
-            document.getElementById('deletesubcatid').value = item[2].innerHTML;
-        }
+    function deletesubcategory(item) {
+        item = item.parentNode.parentNode;
+        item = item.getElementsByTagName('td');
+        document.getElementById('deletecategorynameofsubcategory').value = item[1].innerHTML;
+        document.getElementById('deletesubcategoryname').value = item[3].innerHTML;
+        document.getElementById('deletesubcatid').value = item[2].innerHTML;
+    }
 
-        function editnullcatsubcategory(item) {
-            item = item.parentNode.parentNode;
-            item = item.getElementsByTagName('td');
-            document.getElementById('editnullcatsubcatname').value = item[1].innerHTML;
-            document.getElementById('editnullcatsubcatid').value = item[0].innerHTML;
-        }
+    function editnullcatsubcategory(item) {
+        item = item.parentNode.parentNode;
+        item = item.getElementsByTagName('td');
+        document.getElementById('editnullcatsubcatname').value = item[1].innerHTML;
+        document.getElementById('editnullcatsubcatid').value = item[0].innerHTML;
+    }
 
-        function deletenullcatsubcategory(item) {
-            item = item.parentNode.parentNode;
-            item = item.getElementsByTagName('td');
-            document.getElementById('deletenullcatsubcategoryname').value = item[1].innerHTML;
-            document.getElementById('deletenullcatsubcatid').value = item[0].innerHTML;
-        }
+    function deletenullcatsubcategory(item) {
+        item = item.parentNode.parentNode;
+        item = item.getElementsByTagName('td');
+        document.getElementById('deletenullcatsubcategoryname').value = item[1].innerHTML;
+        document.getElementById('deletenullcatsubcatid').value = item[0].innerHTML;
+    }
     </script>
 </body>
 

@@ -1,29 +1,14 @@
 <?php
 session_start();
-if (isset($_SESSION['custid'])) {
-  header("Location: profile.php");
-  die();
-}
 require("common/database.php");
 $responce = "";
-
-
-if (isset($_GET['alreadyexist'])) {
-  $responce =
-    '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-  <strong>Attention !</strong> Login to continue
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>';
-}
-
-
 
 
 // when try to submit email and password
 if ((isset($_POST['submit'])) && (isset($_POST['password']))) {
   $email = $_POST['email'];
   $password = $_POST['password'];
-  $query = "SELECT email,password,custid FROM `customer` WHERE `email` LIKE '$email';";
+  $query = "SELECT * FROM `supplier` WHERE `email` LIKE '$email';";
   $result = mysqli_query($con, $query);
   $num = mysqli_num_rows($result);
   if ($num == 0) {
@@ -38,8 +23,8 @@ if ((isset($_POST['submit'])) && (isset($_POST['password']))) {
       session_destroy();
       session_unset();
       session_start();
-      $_SESSION['custmail'] = $email;
-      $_SESSION['custid'] = $user['custid'];
+      $_SESSION['suppliermail'] = $email;
+      $_SESSION['supplierid'] = $user['supplierid'];
       header("Location: index.php");
       die();
     } else {
@@ -55,7 +40,7 @@ if ((isset($_POST['submit'])) && (isset($_POST['password']))) {
 // when try to reset password
 if (isset($_POST['resetpassword'])) {
   $email = $_POST['email'];
-  $query = "SELECT email FROM `customer` WHERE `email` LIKE '$email';";
+  $query = "SELECT email FROM `supplier` WHERE `email` LIKE '$email';";
   $result = mysqli_query($con, $query);
   $num = mysqli_num_rows($result);
   if ($num == 0) {
@@ -79,7 +64,7 @@ if (isset($_POST['resetpassword'])) {
 if (isset($_POST['newsubmit'])) {
   $email = $_SESSION['email'];
   $hash1 = password_hash($_POST['newpassword'], PASSWORD_DEFAULT);
-  $query = "UPDATE `customer` SET `password` = '$hash1' WHERE `customer`.`email` LIKE '$email';";
+  $query = "UPDATE `supplier` SET `password` = '$hash1' WHERE `supplier`.`email` LIKE '$email';";
   $result = mysqli_query($con, $query);
   if ($result) {
     $responce =
@@ -113,7 +98,6 @@ if (isset($_POST['otpsubmit'])) {
     </div>';
   }
 }
-mysqli_close($con);
 ?>
 <!DOCTYPE html>
 
@@ -124,7 +108,6 @@ mysqli_close($con);
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log in</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 
@@ -133,53 +116,59 @@ mysqli_close($con);
   <div id="alert">
     <?php echo $responce; ?>
   </div>
-  <div class="container border border-4 shadow p-3" style="max-width: 600px">
-    <h2>Log in</h2>
-    <hr>
-    <form action="login.php" method="post">
-      <?php
-      if (isset($_SESSION['resetpassword'])) {
-        $email = $_SESSION['email'];
-        echo
-        '<div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" readonly value=' . $email . '>
-                      <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
-                    </div>';
-      } else {
-        echo
-        '<div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
-                      <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="passwd" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="passwd" name="password">
-                    </div>
-                    <div>
-                      <a href="signin.php">New customer</a>
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="resetpassword" value="resetpassword">Resetpassword</button>
-                    <button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="checknullpassword(event);">Submit</button>';
-      }
-      ?>
-      <?php
-      if (isset($_SESSION['checkotp'])) {
-        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#otpmodal">
-                    Enter OTP
-                    </button>';
-      }
-      if (isset($_SESSION['changepassword'])) {
-        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#passmodal">
-                    Set New Password
-                    </button>';
-      }
-      ?>
-    </form>
-    <hr>
+  <div class="container" style="max-width: 600px; height: 80vh;">
+    <div class="border border-4 shadow p-2">
+      <h2>Log in</h2>
+      <hr>
+      <form class="row g-3" action="login.php" method="post">
+        <?php
+        if (isset($_SESSION['resetpassword'])) {
+          $email = $_SESSION['email'];
+          echo
+          '<div class="col-12">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" readonly value=' . $email . '>
+                <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
+              </div>';
+        } else {
+          echo
+          '<div class="col-12">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+                <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
+              </div>
+              <div class="col-12">
+                <label for="passwd" class="form-label">Password</label>
+                <input type="password" class="form-control" id="passwd" name="password">
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary" name="resetpassword" value="resetpassword">Resetpassword</button>
+                <button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="checknullpassword(event);">Submit</button>
+                </div>';
+        }
+        ?>
+        <?php
+        if (isset($_SESSION['checkotp'])) {
+          echo
+          '<div class="col-12">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#otpmodal">
+                Enter OTP
+                </button>
+                </div>';
+        }
+        if (isset($_SESSION['changepassword'])) {
+          echo
+          '<div class="col-12">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#passmodal">
+                Set New Password
+                </button>
+                </div>';
+        }
+        ?>
+      </form>
+      <hr>
+    </div>
   </div>
-
   <!-- modal for otp enter -->
   <div class="modal fade" id="otpmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -235,10 +224,7 @@ mysqli_close($con);
     </div>
   </div>
 
-
-
-  <?php require("common/script.php");
-  require("common/footer.php"); ?>
+  <?php require("common/script.php"); ?>
   <script>
     function checksamepassword(event) {
       pass1 = document.getElementById('newpassword').value;

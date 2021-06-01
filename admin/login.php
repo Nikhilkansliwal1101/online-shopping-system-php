@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (isset($_SESSION['adminid'])) {
+  header("Location: profile.php");
+}
 require("common/database.php");
 $responce = "";
 
@@ -23,9 +26,8 @@ if ((isset($_POST['submit'])) && (isset($_POST['password']))) {
       session_destroy();
       session_unset();
       session_start();
-      $_SESSION['logined'] = $email;
+      $_SESSION['adminmail'] = $email;
       $_SESSION['adminid'] = $user['adminid'];
-      $_SESSION['status'] = $user['status'];
       header("Location: index.php");
       die();
     } else {

@@ -2,8 +2,8 @@
 session_start();
 $responce="";
 
-if (!isset($_SESSION['adminid'])) {
-  header("Location: index.php");
+if (!isset($_SESSION['supplierid'])) {
+  header("Location: login.php");
   die();
 }
 require("common/database.php");
@@ -12,7 +12,7 @@ if (isset($_POST["savechanges"])) {
   $mobile = $_POST['mobile'];
   $email = $_POST['email'];
 
-  $query = "UPDATE `admin` SET `name`= '$name',`mobile`='$mobile' WHERE `admin`.`email` ='$email' ;";
+  $query = "UPDATE `supplier` SET `name`= '$name',`mobile`='$mobile' WHERE `supplier`.`email` ='$email' ;";
   $result = mysqli_query($con, $query);
   if ($result) {
         $responce=
@@ -28,8 +28,8 @@ if (isset($_POST["savechanges"])) {
         </div>';
   }
 }
-$email = $_SESSION['adminmail'];
-$query = "SELECT `name`, `mobile` FROM `admin` WHERE `email` LIKE '$email'";
+$email = $_SESSION['suppliermail'];
+$query = "SELECT `name`, `mobile` FROM `supplier` WHERE `email` LIKE '$email'";
 $detail = mysqli_query($con, $query);
 $detail = mysqli_fetch_assoc($detail);
 ?>
@@ -49,7 +49,6 @@ $detail = mysqli_fetch_assoc($detail);
   <?php require("common/navbar.php"); ?>
 <div id="alert">
 <?php echo $responce;?>
-
 </div>
   <div class="container border border-4 shadow p-3" style="max-width: 600px">
     <div class="d-flex justify-content-center">
@@ -60,7 +59,7 @@ $detail = mysqli_fetch_assoc($detail);
     <form class="row g-3" method="post" action="profile.php">
       <div class="col-12">
         <label for="inputEmail4" class="form-label">Email</label>
-        <input type="email" class="form-control" id="inputEmail4" name="email" readonly value=<?php echo $_SESSION['adminmail']; ?>>
+        <input type="email" class="form-control" id="inputEmail4" name="email" readonly value=<?php echo $_SESSION['suppliermail']; ?>>
       </div>
       <div class="col-12">
         <label for="inputname" class="form-label">Name</label>

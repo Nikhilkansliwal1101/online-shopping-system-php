@@ -1,7 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['logined']))
-{
+if (!isset($_SESSION['adminid'])) {
     header("Location: login.php");
 }
 require("common/database.php");
@@ -22,17 +21,17 @@ if (isset($_POST['addcategory'])) {
         $target_file = $target_dir . $imagename . "." . $imageFileType;
         $imagename = $imagename . "." . $imageFileType;
         if ($check !== false) {
-            if ($_FILES["catimage"]["size"] > 500000) {
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "jfif") {
                 $responce =
                     '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error! </strong>File size is too big
+                <strong>Error! </strong>only JPG, JPEG, PNG & GIF files are allowed.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
             } else {
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "jfif") {
+                if ($_FILES["catimage"]["size"] > 500000) {
                     $responce =
                         '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Error! </strong>only JPG, JPEG, PNG & GIF files are allowed.
+                    <strong>Error! </strong>File size is too big
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
                 } else {
@@ -42,22 +41,22 @@ if (isset($_POST['addcategory'])) {
                         if ($result) {
                             $responce =
                                 '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Sucess! </strong>Category added sucessfully
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>';
+                        <strong>Sucess! </strong>Category added sucessfully
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
                         } else {
                             $responce =
                                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error! </strong>Cannot add category
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>';
+                        <strong>Error! </strong>Cannot add category
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
                         }
                     } else {
                         $responce =
                             '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error! </strong>Error in uploading file.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
+                    <strong>Error! </strong>Error in uploading file.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
                     }
                 }
             }
@@ -133,6 +132,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <title>Categories</title>
 </head>
@@ -140,54 +140,53 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
 <body>
     <?php require("common/navbar.php"); ?>
 
+    <div id="alert">
+        <?php echo $responce; ?>
+    </div>
     <div class="text-center small">
-        <div id="alert">
-            <?php echo $responce; ?>
-        </div>
         <!-- category table -->
-        <div class="shadow border-4 p-2">
-            <div class="card my-4 shadow">
-                <div class="card-header">
-                    <h1>Categories</h1>
-                </div>
-                <div class="card-body">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addcat">
-                        Add New category
-                    </button>
-                </div>
+        <div class="card my-4 shadow">
+            <div class="card-header">
+                <h1>Categories</h1>
             </div>
-            <div class="table-responsive mw-100">
-                <table id="categorytable" class="table table-striped table-hover table-bordered text-wrap">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="display: none">Catid</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Edit Description</th>
-                            <th scope="col">delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($category as $cat) {
-                            $catname = $cat['catname'];
-                            $catdesc = $cat["catdesc"];
-                            $catid = $cat['catid'];
-                            echo
-                            '<tr>
-                                <td style="display: none">' . $catid . '</td>
-                                <td>' . $catname . '</td>
-                                <td>' . $catdesc . '</td>
-                                <td><button type="button" class="btn btn-success" onclick="editcategory(this)" data-bs-toggle="modal" data-bs-target="#editcategory">Edit Description</button></td>
-                                <td><button type="button" class="btn btn-danger" onclick="deletecategory(this)" data-bs-toggle="modal" data-bs-target="#deletecategory">Delete</button></td>
-                            </tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addcat">
+                    Add New category
+                </button>
             </div>
+        </div>
+        <div class="table-responsive mw-100">
+            <table id="categorytable" class="table table-striped table-hover table-bordered text-wrap">
+                <thead>
+                    <tr>
+                        <th scope="col" style="display: none">Catid</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                foreach ($category as $cat) {
+                    $catname = $cat['catname'];
+                    $catdesc = $cat["catdesc"];
+                    $catid = $cat['catid'];
+                    echo
+                    '<tr>
+                        <td style="display: none">' . $catid . '</td>
+                        <td>' . $catname . '</td>
+                        <td>' . $catdesc . '</td>
+                        <td><button type="button" class="btn btn-success" onclick="editcategory(this)" data-bs-toggle="modal" data-bs-target="#editcategory"><span class="material-icons">edit</span></button></td>
+                        <td><button type="button" class="btn btn-danger" onclick="deletecategory(this)" data-bs-toggle="modal" data-bs-target="#deletecategory"><span class="material-icons">delete</span></button></td>
+                    </tr>';
+                }
+                ?>
+                </tbody>
+            </table>
         </div>
     </div>
+
 
     <!-- Modal for adding category -->
     <div class="modal fade" id="addcat" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">

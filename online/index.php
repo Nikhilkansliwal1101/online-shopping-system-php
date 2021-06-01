@@ -67,7 +67,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         </button>
     </div>
 
-    
+
     <div class="mb-5">
         <!-- showing all category to nevigate to perticular category -->
         <div class="border border-3 rounded-2 shadow p-1 d-flex justify-content-center align-items-center flex-column">
@@ -95,8 +95,72 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 ?>
             </div>
         </div>
-        
-        <!-- showing all category with its subcategories -->
+
+        <!-- recommended products -->
+        <div class="border border-3 rounded-2 shadow p-1">
+            <div class="text-center p-2 border border-1 bg-dark w-100 text-light">
+                <h4>-: Best Sellers :-</h4>
+            </div>
+            <div class="card-group row w-100 p-2 d-flex flex-nowrap" style="overflow-x: scroll;">
+                <?php
+                $query="SELECT * FROM `product` ORDER BY `sold` LIMIT 0,10;";
+                $result = mysqli_query($con, $query);
+                while ($product = mysqli_fetch_assoc($result)) {
+                    $pname = $product['productid'];
+                    $pno = $product['productno'];
+                    $image = $product['image'];
+                    $price = $product['sellprice'];
+                    $mrp = $product['mrp'];
+                    $offer = $product['offer'];
+                    $cgst = $product['cgst'];
+                    $sgst = $product['sgst'];
+                    $available = $product['available'];
+                    $discount = round(($mrp - $price) * 100 / $mrp);
+                    echo
+                    '<div class="col">
+                        <div class="card border border-3 rounded-2 shadow" style="height:300px;width:200px">
+                            <div class="card-header p-0 shadow">
+                                <p class="p-0 m-0 text-danger" style="font-size: x-small; text-align: right;"><marquee direction="right">Get ' . $discount . ' % Off</marquee></p>
+                            </div>
+                            <img src="images/' . $image . '" class="card-img-top" alt="..." height="100px">
+                            <h5 style="display: none">' . $pno . '</h5>
+                            <h5 style=" display: none">' . $cgst . '</h5>
+                            <h5 style="display: none">' . $sgst . '</h5>
+                            <h5 style="display: none">' . $pname . '</h5>
+                            <h5 style="display: none">' . $mrp . '</h5>
+                            <h5 style="display: none">' . $price . '</h5>
+                            <div class="card-body d-flex justify-content-center flex-column p-1 text-center">
+                                <p class="card-title text-center small text-nowrap overflow-hidden" style="  text-overflow:ellipsis;">' . $pname . '</p>
+                                <p><span>&#8377;</span><strong> ' . $price . ' </strong>';if ($price != $mrp) echo '<small style="font-size: x-small;"><s> ' . $mrp . '</s></small>';echo '</p>
+                            </div>
+                            <div class="m-0 p-0">
+                                <p class="p-0 m-0 text-primary" style="font-size: small; text-align: center;">' . $available . ' Items Available</p>
+                                </div>
+                            <div class="card-footer">
+                                <div class="row text-center d-flex align-items-center">';
+                                if ($available > 0) {
+                                    echo
+                                    '<div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
+                                    </div>
+                                    <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
+                                    <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
+                                    </div>';
+                                } else {
+                                    echo 
+                                    '<div class="col-12 m-0 p-1"><button type="button" class="btn btn-outline-warning" style="width: 100%">Out Of Stock</button></div>';
+                                }
+                                echo 
+                                '</div>';
+                            echo 
+                            '</div>
+                        </div>
+                    </div>';
+                }
+                ?>
+            </div>
+        </div>
+
+        <!-- showing all category -->
         <?php
         foreach ($category as $cat) {
             echo
@@ -117,6 +181,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                     </div>
                     </a>
                 </div>';
+                // showing subcategories
                 $query = "SELECT * FROM `subcategory` WHERE catid=$catid";
                 $subcategory = mysqli_query($con, $query);
                 echo
@@ -141,8 +206,72 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                     echo
                     '</div>
                 </div>';
-            echo
-            '</div>';
+                echo '<hr>';
+                // showing top 10 selling product of category
+                echo 
+                '<div class="m-0 p-1">
+                    <div class="card-group row w-100 p-2 d-flex flex-nowrap" style="overflow-x: scroll;"> ';
+                    $query = "SELECT * FROM `product` WHERE `subcatid` IN (SELECT `subcatid` FROM `subcategory` where `catid`=$catid) ORDER BY 'sold' LIMIT 0,10";
+                    $result = mysqli_query($con, $query);
+                    while ($product = mysqli_fetch_assoc($result)) {
+                        $pname = $product['productid'];
+                        $pno = $product['productno'];
+                        $image = $product['image'];
+                        $price = $product['sellprice'];
+                        $mrp = $product['mrp'];
+                        $offer = $product['offer'];
+                        $cgst = $product['cgst'];
+                        $sgst = $product['sgst'];
+                        $available = $product['available'];
+                        $discount = round(($mrp - $price) * 100 / $mrp);
+                        echo
+                        '<div class="col">
+                            <div class="card border border-3 rounded-2 shadow" style="height:300px;width:200px">
+                                <div class="card-header p-0 shadow">
+                                    <p class="p-0 m-0 text-danger" style="font-size: x-small; text-align: right;"><marquee direction="right">Get ' . $discount . ' % Off</marquee></p>
+                                </div>
+                                <img src="images/' . $image . '" class="card-img-top" alt="..." height="100px">
+                                <h5 style="display: none">' . $pno . '</h5>
+                                <h5 style=" display: none">' . $cgst . '</h5>
+                                <h5 style="display: none">' . $sgst . '</h5>
+                                <h5 style="display: none">' . $pname . '</h5>
+                                <h5 style="display: none">' . $mrp . '</h5>
+                                <h5 style="display: none">' . $price . '</h5>
+                                <div class="card-body d-flex justify-content-center flex-column p-1 text-center">
+                                    <p class="card-title text-center small text-nowrap overflow-hidden" style="  text-overflow:ellipsis;">' . $pname . '</p>
+                                    <p><span>&#8377;</span><strong> ' . $price . ' </strong>';if ($price != $mrp) echo '<small style="font-size: x-small;"><s> ' . $mrp . '</s></small>';echo '</p>
+                                </div>
+                                <div class="m-0 p-0">
+                                    <p class="p-0 m-0 text-primary" style="font-size: small; text-align: center;">' . $available . ' Items Available</p>
+                                    </div>
+                                <div class="card-footer">
+                                    <div class="row text-center d-flex align-items-center">';
+                                    if ($available > 0) {
+                                        echo
+                                        '<div class="col-4 m-0 p-1"><button type="button" class="btn btn-danger" style="width: 100%" onclick=decrement(this)>-</button>
+                                        </div>
+                                        <div class="col-4 m-0 p-1 text-center"><h5 class="quantity">0</h5></div>
+                                        <div class="col-4 m-0 p-1"><button type="button" class="btn btn-success" style="width: 100%" onclick=increment(this)>+</button>
+                                        </div>';
+                                    } else {
+                                        echo 
+                                        '<div class="col-12 m-0 p-1"><button type="button" class="btn btn-outline-warning" style="width: 100%">Out Of Stock</button></div>';
+                                    }
+                                    echo 
+                                    '</div>';
+                                echo 
+                                '</div>
+                            </div>
+                        </div>';
+                    }
+                    echo
+                    '</div>
+                    <div class="text-center">
+                        <a class="text-info" href="category.php?catid=' . $catid . '"><h5>See more</h5></a>
+                    </div>
+                </div>
+            </div>
+            <br>';
         }
         ?>
     </div>
@@ -151,6 +280,55 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     require("common/footer.php");
     mysqli_close($con); 
     ?>
+
+    <script>
+    function addproduct(item) {
+        item = item.parentNode.parentNode.parentNode;
+        content = item.getElementsByTagName("h5");
+
+        var product = {};
+        product['pno'] = content[0].innerHTML;
+        product['name'] = content[3].innerHTML;
+        product['cgst'] = content[1].innerHTML;
+        product['sgst'] = content[2].innerHTML;
+        product['mrp'] = content[4].innerHTML;
+        product['price'] = content[5].innerHTML;
+        product['quantity'] = content[6].innerHTML;
+        if (localStorage.getItem('cart') !== null) {
+            cart = JSON.parse(localStorage.getItem('cart'));
+        } else {
+            cart = [];
+        }
+
+        for (i = 0; i < cart.length; i++) {
+            if (cart[i]['pno'] == product['pno']) {
+                cart.splice(i, 1);
+                break;
+            }
+        }
+        if (product['quantity'] > 0) {
+            cart.push(product);
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function increment(item) {
+        block = item.parentNode.parentNode;
+        block = block.getElementsByClassName("quantity");
+        block[0].innerHTML = parseInt(block[0].innerHTML) + 1;
+        addproduct(item.parentNode);
+    }
+
+    function decrement(item) {
+        block = item.parentNode.parentNode;
+        block = block.getElementsByClassName("quantity");
+        if (parseInt(block[0].innerHTML) > 0) {
+            block[0].innerHTML = parseInt(block[0].innerHTML) - 1;
+        }
+        addproduct(item.parentNode);
+    }
+    
+    </script>
 </body>
 
 </html>

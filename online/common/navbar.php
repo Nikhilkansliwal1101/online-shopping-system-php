@@ -12,11 +12,9 @@
                 </li>
             </ul>
             <div class="d-flex">
-                <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search"> -->
-                <!-- <button class="btn btn-outline-success mx-2" type="submit" name="navsubmit">Search</button> -->
                 <a href="order.php"><button class="btn btn-outline-success mx-2" type="button" name="cart">Cart</button></a>
                 <?php
-                if(isset($_SESSION['logined']))
+                if(isset($_SESSION['custid']))
                 {
                   echo 
                   '<a href="profile.php"><button class="btn btn-outline-success mx-2" type="button" name="profile">Profile</button></a>

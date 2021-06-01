@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['adminid'])) {
+if (!isset($_SESSION['supplierid'])) {
     header("Location: login.php");
 }
 $target_dir = "../online/images/";
@@ -130,53 +130,15 @@ if (isset($_POST['deleteproduct'])) {
         </div>';
     }
 }
-//update null product
-if (isset($_POST['editnullproduct'])) {
-    $subcatid = $_POST['editnullsubcatid'];
-    $productno = $_POST['editnullproductno'];
-    $query = "UPDATE `product` SET `subcatid`='$subcatid' WHERE `productno`= '$productno';";
-    $result = mysqli_query($con, $query);
-    if ($result) {
-        $responce =
-            '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Sucess! </strong>Product updated sucessfully
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>';
-    } else {
-        $responce =
-            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error! </strong>Cannot update Product
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>';
-    }
-}
-// delete null product
-if (isset($_POST['deletenullproduct'])) {
-    $query = "DELETE FROM `product` WHERE `product`.`productno` = " . $_POST['deletenullproductno'] . ";";
-    $result = mysqli_query($con, $query);
-    if ($result) {
-        $responce =
-            '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Sucess! </strong>Product deleted sucessfully
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>';
-    } else {
-        $responce =
-            '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error! </strong>Cannot delete Product
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>';
-    }
-}
 // category list
 $query = "SELECT * FROM `category`";
 $category = mysqli_query($con, $query);
 $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
-
+// subcategory list 
 $query = "SELECT * FROM `subcategory`;";
 $subcategory = mysqli_query($con, $query);
 $subcategory = mysqli_fetch_all($subcategory, MYSQLI_ASSOC);
-
+// suppliers list 
 $query = "SELECT * FROM `supplier`;";
 $suppliers = mysqli_query($con, $query);
 $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
@@ -261,30 +223,6 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
                         </tr>
                     </thead>
                     <tbody id="product">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- null product table -->
-        <div>
-            <div class="card my-4 shadow">
-                <div class="card-header">
-                    <h1>Products With Null Subcategory</h1>
-                </div>
-            </div>
-            <div class="table-responsive mw-100">
-                <table id="nullproducttable" class="table table-striped table-hover table-bordered text-wrap">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="display: none">Productno</th>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Set</th>
-                            <th scope="col">Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody id="nullproduct">
 
                     </tbody>
                 </table>
@@ -491,89 +429,6 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
         </div>
     </div>
 
-    <!-- Modal for updating null product -->
-    <div class="modal fade" id="editnullproduct" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel4">Set Product category and subcategory</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="product.php" enctype="multipart/form-data" class="row g-3">
-                        <div class="mb-2 col-12">
-                            <label for="editnullproductname" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="editnullproductname" name="editnullproductname"
-                                readonly>
-                        </div>
-                        <div class="mb-2 col-12">
-                            <input type="text" class="form-control" id="editnullproductno" name="editnullproductno"
-                                style="Display: none" readonly>
-                        </div>
-                        <div class="mb-2 col-6">
-                            <label for="editnullselectcate" class="form-label">Select category</label>
-                            <select id="editnullselectcate" class="form-select" aria-label="Default select example"
-                                onchange="getsubcategorydropdown(this.value,'enform')" name="editnullcatid">
-                                <?php
-                                foreach ($category as $cat) {
-                                    echo "<option value=" . $cat['catid'] . ">" . $cat['catname'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="mb-2 col-6">
-                            <label for="editnullselectsubcategory" class="form-label">Select Sub Category</label>
-                            <select id="editnullselectsubcategory" class="form-select"
-                                aria-label="Default select example" name="editnullsubcatid" required>
-                                <?php
-                                echo "<option  selected value=0>select</option>";
-                                foreach ($subcategory as $subcat) {
-                                    echo "<option value=" . $subcat['subcatid'] . ">" . $subcat['name'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary" name="editnullproduct">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- modal foe deleting null product -->
-    <div class="modal fade" id="deletenullproduct" tabindex="-1" aria-labelledby="exampleModalLabel5"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel5">Delete Product</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="product.php" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <input type="text" class="form-control" id="deletenullproductno" name="deletenullproductno"
-                                style="display: none">
-                        </div>
-                        <div class="mb-3">
-                            <label for="deletenullproductname" class="form-label">Product</label>
-                            <input type="text" class="form-control" id="deletenullproductname"
-                                name="deletenullproductname" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Please Press Delete Product to
-                                Conform</label>
-                        </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary" name="deletenullproduct">Delete
-                                Product</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <?php require("common/script.php"); ?>
 
@@ -583,9 +438,7 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
     <script>
     $(document).ready(function() {
         $('#producttable').DataTable();
-        $('#nullproducttable').DataTable();
         getproducttable('cat0');
-        getnullproducttable()
     });
 
     function getproducttable(subcatid) {
@@ -600,23 +453,7 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
                 $('#producttable').DataTable();
             }
         };
-        xhttp.open("GET", "list.php?list=product&frompage=product&subcatid=" + subcatid, true);
-        xhttp.send();
-    }
-
-    function getnullproducttable() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-
-            if (this.readyState == 4 && this.status == 200) {
-                var table = $('#nullproducttable').DataTable();
-                table.destroy();
-                document.getElementById("nullproduct").innerHTML =
-                    this.responseText;
-                $('#nullproducttable').DataTable();
-            }
-        };
-        xhttp.open("GET", "list.php?list=nullproduct", true);
+        xhttp.open("GET", "list.php?list=product&subcatid=" + subcatid, true);
         xhttp.send();
     }
 
@@ -637,13 +474,10 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
                 } else if (type == "eform") {
                     document.getElementById("editselectsubcategory").innerHTML =
                         this.responseText;
-                } else if (type == "enform") {
-                    document.getElementById("editnullselectsubcategory").innerHTML =
-                        this.responseText;
                 }
             }
         };
-        xhttp.open("GET", "list.php?list=subcat&dropdown=1&catid=" + catid, true);
+        xhttp.open("GET", "list.php?list=subcat&catid=" + catid, true);
         xhttp.send();
     }
 
@@ -668,20 +502,6 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
         document.getElementById('editcgst').value = item[7].innerHTML;
         document.getElementById('editsgst').value = item[8].innerHTML;
         document.getElementById('editadd').value = 0;
-    }
-
-    function deletenullproduct(item) {
-        item = item.parentNode.parentNode;
-        item = item.getElementsByTagName('td');
-        document.getElementById('deletenullproductno').value = item[0].innerHTML;
-        document.getElementById('deletenullproductname').value = item[1].innerHTML;
-    }
-
-    function editnullproduct(item) {
-        item = item.parentNode.parentNode;
-        item = item.getElementsByTagName('td');
-        document.getElementById('editnullproductno').value = item[0].innerHTML;
-        document.getElementById('editnullproductname').value = item[1].innerHTML;
     }
     </script>
 </body>

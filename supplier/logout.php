@@ -1,5 +1,6 @@
 <?php
 session_start();
-session_destroy();
+unset($_SESSION['supplierid']);
+unset($_SESSION['suppliermail']);
 header('Location: login.php');
 ?>

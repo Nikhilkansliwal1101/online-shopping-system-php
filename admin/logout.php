@@ -1,5 +1,6 @@
 <?php
 session_start();
-session_destroy();
+unset($_SESSION['adminid']);
+unset($_SESSION['adminmail']);
 header('Location: login.php');
 ?>

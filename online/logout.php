@@ -1,4 +1,5 @@
 <?php
 session_start();
-session_destroy();
+unset($_SESSION['custid']);
+unset($_SESSION['custmail']);
 header('Location: index.php');

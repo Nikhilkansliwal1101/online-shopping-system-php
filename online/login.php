@@ -35,9 +35,6 @@ if ((isset($_POST['submit'])) && (isset($_POST['password']))) {
   } else {
     $user = mysqli_fetch_assoc($result);
     if (password_verify($password, $user['password'])) {
-      session_destroy();
-      session_unset();
-      session_start();
       $_SESSION['custmail'] = $email;
       $_SESSION['custid'] = $user['custid'];
       header("Location: index.php");
@@ -87,10 +84,9 @@ if (isset($_POST['newsubmit'])) {
       <strong>Success!</strong>Password updated sucessfully!
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
-    unset($_POST['newsubmit']);
-    session_destroy();
-    session_unset();
-    session_start();
+    unset($_SESSION['resetpassword']);
+    unset($_SESSION['email']);
+    unset($_SESSION['changepassword']);
   } else {
     $responce =
       '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -104,6 +100,7 @@ if (isset($_POST['newsubmit'])) {
 if (isset($_POST['otpsubmit'])) {
   if ($_POST['otp'] == $_SESSION['sendotp']) {
     $_SESSION['changepassword'] = 1;
+    unset($_SESSION['sendotp']);
     unset($_SESSION['checkotp']);
   } else {
     $responce =
@@ -142,26 +139,26 @@ mysqli_close($con);
         $email = $_SESSION['email'];
         echo
         '<div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" readonly value=' . $email . '>
-                      <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
-                    </div>';
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" readonly value=' . $email . '>
+          <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
+        </div>';
       } else {
         echo
         '<div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
-                      <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="passwd" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="passwd" name="password">
-                    </div>
-                    <div>
-                      <a href="signin.php">New customer</a>
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="resetpassword" value="resetpassword">Resetpassword</button>
-                    <button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="checknullpassword(event);">Submit</button>';
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+          <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
+          </div>
+        <div class="mb-3">
+          <label for="passwd" class="form-label">Password</label>
+          <input type="password" class="form-control" id="passwd" name="password">
+        </div>
+        <div>
+          <a href="signin.php">New customer</a>
+        </div>
+        <button type="submit" class="btn btn-primary" name="resetpassword" value="resetpassword">Resetpassword</button>
+        <button type="submit" class="btn btn-primary" name="submit" value="submit" onclick="checknullpassword(event);">Submit</button>';
       }
       ?>
       <?php

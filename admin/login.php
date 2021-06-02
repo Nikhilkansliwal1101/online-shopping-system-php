@@ -23,9 +23,6 @@ if ((isset($_POST['submit'])) && (isset($_POST['password']))) {
   } else {
     $user = mysqli_fetch_assoc($result);
     if (password_verify($password, $user['password'])) {
-      session_destroy();
-      session_unset();
-      session_start();
       $_SESSION['adminmail'] = $email;
       $_SESSION['adminid'] = $user['adminid'];
       header("Location: index.php");
@@ -75,10 +72,9 @@ if (isset($_POST['newsubmit'])) {
       <strong>Success!</strong>Password updated sucessfully!
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
-    unset($_POST['newsubmit']);
-    session_destroy();
-    session_unset();
-    session_start();
+      unset($_SESSION['resetpassword']);
+      unset($_SESSION['email']);
+      unset($_SESSION['changepassword']); 
   } else {
     $responce =
       '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -93,6 +89,7 @@ if (isset($_POST['otpsubmit'])) {
   if ($_POST['otp'] == $_SESSION['sendotp']) {
     $_SESSION['changepassword'] = 1;
     unset($_SESSION['checkotp']);
+    unset($_SESSION['sendotp']);
   } else {
     $responce =
       '<div class="alert alert-danger alert-dismissible fade show" role="alert">

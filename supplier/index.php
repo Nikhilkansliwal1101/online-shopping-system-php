@@ -240,15 +240,8 @@ $suppliers = mysqli_fetch_all($suppliers, MYSQLI_ASSOC);
                 </div>
                 <div class="modal-body">
                     <form method="post" action="product.php" enctype="multipart/form-data" class="row g-3">
-                        <div class="mb-2 col-12">
-                            <label for="supplier" class="form-label">Supplier</label>
-                            <select id="supplier" class="form-select" aria-label="Default select example" name="supplierid" required>
-                                <?php
-                                foreach ($suppliers as $supplier) {
-                                    echo "<option value=" . $supplier['supplierid'] . ">" . $supplier['name'] . "</option>";
-                                }
-                                ?>
-                            </select>
+                        <div class="d-none">
+                            <input type="text" class="form-control" id="productname" name="supplierid" required value=<?php echo $_SESSION['supplierid']; ?>>
                         </div>
                         <div class="mb-2 col-12">
                             <label for="productname" class="form-label">Product Name</label>

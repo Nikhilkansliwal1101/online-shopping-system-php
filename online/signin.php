@@ -9,10 +9,6 @@ $responce = "";
 require("common/database.php");
 
 
-if (!isset($_SESSION['emailvarified'])) {
-    $_SESSION['emailvarified'] = 0;
-    $_SESSION['otpsent'] = 0;
-}
 if (isset($_POST["submit"])) {
     $name = $_POST['name'];
     $mobile = $_POST['mobile'];
@@ -26,10 +22,8 @@ if (isset($_POST["submit"])) {
     $query = "INSERT INTO `customer` (`custid`, `name`, `email`, `password`, `mobile`, `address`, `city`, `state`, `pincode`, `date`) VALUES (NULL,'$name', '$email','$hash', '$mobile', '$address', '$city', '$state', '$pincode', current_timestamp());";
     $result = mysqli_query($con, $query);
     if ($result) {
-        unset($_SESSION['otpsent']);
         unset($_SESSION['emailvarified']);
         unset($_SESSION['email']);
-        unset($_SESSION['sendotp']);
         header("Location: login.php?alreadyexist=1");
         die();
     } else {
@@ -64,6 +58,8 @@ if (isset($_POST['sendotp'])) {
 if (isset($_POST['otpsubmit'])) {
     if ($_POST['otp'] == $_SESSION['sendotp']) {
         $_SESSION['emailvarified'] = 1;
+        unset($_SESSION['otpsent']);
+        unset($_SESSION['sendotp']);
     } else {
         $responce =
             '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -74,7 +70,6 @@ if (isset($_POST['otpsubmit'])) {
 }
 if (isset($_POST['resendotp'])) {
     unset($_SESSION['otpsent']);
-    unset($_SESSION['emailvarified']);
     unset($_SESSION['email']);
     unset($_SESSION['sendotp']);
     header("Location: signin.php");
@@ -101,7 +96,7 @@ mysqli_close($con);
         <?php echo $responce; ?>
     </div>
     <?php
-    if ($_SESSION['emailvarified'] == 1) {
+    if (isset($_SESSION['emailvarified'])) {
         $email = $_SESSION['email'];
         echo
         '<div class="container border border-4 shadow p-3 mb-5" style="max-width: 600px">
@@ -151,7 +146,7 @@ mysqli_close($con);
             </form>
         </div>';
     } else {
-        if (!$_SESSION['otpsent']) {
+        if (!isset($_SESSION['otpsent'])) {
             echo
             '<div class="container border border-4 shadow  p-3" style="max-width: 600px">
                 <h2>Varify your email address</h2><hr>

@@ -12,7 +12,7 @@ if ($result) {
     $products = json_decode($_POST['products'], true);
     foreach ($products as $product) {
         $pno = $product['pno'];
-        $que = "SELECT `purchaseprice`,`available`,`adminid` FROM `product` WHERE productno=$pno";
+        $que = "SELECT `purchaseprice`,`available`,`supplierid` FROM `product` WHERE productno=$pno";
         $result = mysqli_query($con, $que);
         $result = mysqli_fetch_array($result);
         $purchaseprice = $result['purchaseprice'];

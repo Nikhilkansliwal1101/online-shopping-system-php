@@ -8,7 +8,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="index.php">Home</a>
+                    <a class="nav-link" aria-current="page" href="index.php">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="order.php">Orders</a>
                 </li>
             </ul>
             <div class="d-flex">

@@ -7,11 +7,11 @@ require("common/database.php");
 if ($_GET['list'] == 'product') {
     if($_GET['frompage'] == 'subcategory'){
         $subcatid = $_GET['subcatid'];
-        $query = "SELECT * FROM `product` WHERE `subcatid`=$subcatid ORDER BY 'sold'";
+        $query = "SELECT * FROM `product` WHERE `subcatid`=$subcatid ORDER BY 'sold' DESC";
     }
     else if($_GET['frompage'] == 'category'){
         $catid = $_GET['catid'];
-        $query = "SELECT * FROM `product` WHERE `subcatid` IN (SELECT `subcatid` FROM `subcategory` where `catid`=$catid) ORDER BY 'sold'";
+        $query = "SELECT * FROM `product` WHERE `subcatid` IN (SELECT `subcatid` FROM `subcategory` where `catid`=$catid) ORDER BY 'sold' DESC";
     }
     $result = mysqli_query($con, $query);
     while ($product = mysqli_fetch_assoc($result)) {
@@ -109,13 +109,23 @@ if ($_GET['list'] == 'product') {
     $query = "SELECT `name` FROM `subcategory` WHERE `subcatid`=" . $subcatid . ";";
     $subcategoryname = mysqli_query($con, $query);
     $subcategoryname = mysqli_fetch_assoc($subcategoryname);
-    echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("filter")><h2>' . $subcategoryname['name'] . '</h2></button>';
+    if($_GET['formpage']=='category'){
+        echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("filter")><h2>' . $subcategoryname['name'] . '</h2></button>';
+    }
+    else if($_GET['formpage']=='subcategory'){
+        echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("subcatfilter")><h2>' . $subcategoryname['name'] . '</h2></button>';
+    }
 } else if ($_GET['list'] == 'categoryname') {
     $catid = $_GET['catid'];
     $query = "SELECT `catname` FROM `category` WHERE `catid`=" . $catid . ";";
     $categoryname = mysqli_query($con, $query);
     $categoryname = mysqli_fetch_assoc($categoryname);
-    echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("filter")><h2>' . $categoryname['catname'] . '</h2></button>';
+    if($_GET['formpage']=='category'){
+        echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("filter")><h2>' . $categoryname['catname'] . '</h2></button>';
+    }
+    else if($_GET['formpage']=='subcategory'){
+        echo '<button type="button" class="btn btn-dark my-1 w-100" onclick=toggledisplay("catfilter")><h2>' . $categoryname['catname'] . '</h2></button>';
+    }
 } else if ($_GET['list'] == 'category') {
     if($_GET['frompage']=='subcategory'){
         $query = "SELECT * FROM `category`";
@@ -124,7 +134,7 @@ if ($_GET['list'] == 'product') {
         while ($cat = mysqli_fetch_assoc($category)) {
             $catid = $cat['catid'];
             $catname = $cat['catname'];
-            echo '<li><button type="button" class="btn btn-outline-success w-100 my-1 text-dark" onclick=getsubcategory(this.value) value=' . $catid . '>' . $catname . '</button></li>';
+            echo '<li><button type="button" class="btn btn-outline-success w-100 my-1 text-dark" onclick=getcategoryname(this.value) value=' . $catid . '>' . $catname . '</button></li>';
         }
         echo "</ul>";
     }

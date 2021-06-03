@@ -30,24 +30,21 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
 <body>
     <?php require("common/navbar.php"); ?>
     <div class="mb-5">
-        <div class="row">
-            <div id="subcategoryname" class="m-0 p-0">
-            </div>
-            <div id="filter" class="d-none row m-0 p-1">
-                <div class="col-md-6">
+        <div>
+            <div id="categoryname" class="m-0 p-0"></div>
+            <div id="catfilter" class="d-none m-0 p-0">
                     <div>
                         <h2>Select Category</h2>
                     </div>
                     <div id="category"></div>
-                </div>
-                <div class="col-md-6">
+            </div>
+            <div id="subcategoryname" class="m-0 p-0"></div>
+            <div id="subcatfilter" class="d-none m-0 p-0">
                     <div>
                         <h2>Select subcategory</h2>
                     </div>
                     <div id="subcategory"></div>
-                </div>
             </div>
-
         </div>
         <div class="card-group card-deck row row-cols-1 row-cols-md-2 row-cols-lg-4 text-center d-flex justify-content-around p-2 m-0" id="product">
         </div>
@@ -59,8 +56,9 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
 
     <script>
         $(document).ready(function() {
+            getcategoryname(<?php echo $_GET['catid'] ?>);
             getcategory();
-            toggledisplay('filter');
+            toggledisplay('subcatfilter');
             getproduct(<?php echo $_GET['subcatid'] ?>);
             getsubcategory(<?php echo $_GET['catid'] ?>);
         });
@@ -122,7 +120,7 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("product").innerHTML = this.responseText;
-                    toggledisplay('filter');
+                    toggledisplay('subcatfilter');
                 }
             };
             getsubcategoryname(subcatid);
@@ -135,6 +133,8 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("subcategory").innerHTML = this.responseText;
+                    toggledisplay('catfilter');
+                    toggledisplay('subcatfilter');
                 }
             };
             xhttp.open("GET", "list.php?list=subcategory&frompage=subcategory&catid=" + catid, true);
@@ -148,9 +148,21 @@ if (!isset($_GET['subcatid']) || !isset($_GET['catid'])) {
                     document.getElementById("subcategoryname").innerHTML = this.responseText;
                 }
             };
-            xhttp.open("GET", "list.php?list=subcategoryname&subcatid=" + subcatid, true);
+            xhttp.open("GET", "list.php?list=subcategoryname&formpage=subcategory&subcatid=" + subcatid, true);
             xhttp.send();
         }
+        
+        function getcategoryname(catid) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("categoryname").innerHTML = this.responseText;
+            }
+        };
+        getsubcategory(catid);
+        xhttp.open("GET", "list.php?list=categoryname&formpage=subcategory&catid=" + catid, true);
+        xhttp.send();
+    }
 
         function getcategory() {
             var xhttp = new XMLHttpRequest();

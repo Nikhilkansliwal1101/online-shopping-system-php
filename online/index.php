@@ -103,7 +103,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
             </div>
             <div class="card-group row w-100 p-2 d-flex flex-nowrap" style="overflow-x: scroll;">
                 <?php
-                $query="SELECT * FROM `product` ORDER BY `sold` LIMIT 0,10;";
+                $query="SELECT * FROM `product` ORDER BY `sold` DESC LIMIT 0,10;";
                 $result = mysqli_query($con, $query);
                 while ($product = mysqli_fetch_assoc($result)) {
                     $pname = $product['productid'];
@@ -211,7 +211,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 echo 
                 '<div class="m-0 p-1">
                     <div class="card-group row w-100 p-2 d-flex flex-nowrap" style="overflow-x: scroll;"> ';
-                    $query = "SELECT * FROM `product` WHERE `subcatid` IN (SELECT `subcatid` FROM `subcategory` where `catid`=$catid) ORDER BY 'sold' LIMIT 0,10";
+                    $query = "SELECT * FROM `product` WHERE `subcatid` IN (SELECT `subcatid` FROM `subcategory` where `catid`=$catid) ORDER BY 'sold' DESC LIMIT 0,10";
                     $result = mysqli_query($con, $query);
                     while ($product = mysqli_fetch_assoc($result)) {
                         $pname = $product['productid'];

@@ -148,7 +148,7 @@ session_start();
                 document.getElementById("categoryname").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "list.php?list=categoryname&catid=" + catid, true);
+        xhttp.open("GET", "list.php?list=categoryname&formpage=category&catid=" + catid, true);
         xhttp.send();
     }
 

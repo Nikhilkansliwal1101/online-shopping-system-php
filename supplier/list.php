@@ -99,7 +99,7 @@ if ($_GET['list'] == 'subcat') {
     </div>
     <div class="row p-0 shadow m-0">
         <div class="col-md-6 row">
-            <div class="col-4"><div>Payment id :</div></div>
+            <div class="col-4"><div>Order id :</div></div>
             <div class="col-8"><div>' . $_GET["paymentid"] . '</div></div>
         </div>
         <div class="col-md-6 row">

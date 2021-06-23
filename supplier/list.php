@@ -14,24 +14,39 @@ if ($_GET['list'] == 'subcat') {
         echo "<option value=" . $subcat['subcatid'] . ">" . $subcat['name'] . "</option>";
     }
 } else if ($_GET['list'] == 'product') {
-    $supplierid=$_SESSION['supplierid'];
+    $supplierid = $_SESSION['supplierid'];
     if (!substr_compare($_GET['subcatid'], "cat", 0, 3)) {
-        if ($_GET['subcatid'][3] == 0) {
-            $query = "SELECT * FROM `product` WHERE `supplierid` = '$supplierid' and `subcatid` IS NOT NULL;";
+        if ($_GET['frompage'] == 'outofstockproduct') {
+            if ($_GET['subcatid'][3] == 0) {
+                $query = "SELECT * FROM `product` WHERE  `supplierid` = '$supplierid' and(`subcatid` IS NOT NULL) AND `available`=0;";
+            } else {
+                $_GET['subcatid'] = str_replace("cat", "", $_GET['subcatid']);
+                $query = "SELECT * FROM `product` WHERE  `supplierid` = '$supplierid' and `available`=0 AND subcatid IN (SELECT `subcatid` FROM `subcategory` WHERE `catid`=" . $_GET['subcatid'] . ");";
+            }
         } else {
-            $_GET['subcatid'] = str_replace("cat", "", $_GET['subcatid']);
-            $query = "SELECT * FROM `product` WHERE `supplierid` = '$supplierid' and subcatid IN (SELECT `subcatid` FROM `subcategory` WHERE `catid`=" . $_GET['subcatid'] . ");";
+            if ($_GET['subcatid'][3] == 0) {
+                $query = "SELECT * FROM `product` WHERE  `supplierid` = '$supplierid' and (`subcatid` IS NOT NULL);";
+            } else {
+                $_GET['subcatid'] = str_replace("cat", "", $_GET['subcatid']);
+                $query = "SELECT * FROM `product` WHERE  `supplierid` = '$supplierid' and subcatid IN (SELECT `subcatid` FROM `subcategory` WHERE `catid`=" . $_GET['subcatid'] . ");";
+            }
         }
     } else {
-        $query = "SELECT * FROM `product` WHERE `supplierid` = '$supplierid' and  `subcatid` = " . $_GET['subcatid'];
+        if ($_GET['frompage'] == 'outofstockproduct') {
+            $query = "SELECT * FROM `product` WHERE  `supplierid` = '$supplierid' and `available`=0 AND subcatid=" . $_GET['subcatid'];
+        } else {
+            $query = "SELECT * FROM `product` WHERE  `supplierid` = '$supplierid' and subcatid=" . $_GET['subcatid'];
+        }
     }
-    $products = mysqli_query($con, $query);echo mysqli_error($con)."<br>";
-    $products = mysqli_fetch_all($products, MYSQLI_ASSOC);echo mysqli_error($con)."<br>";
-    foreach ($products as $product) {
-        echo
-        '<tr>
+    $products = mysqli_query($con, $query);
+    $products = mysqli_fetch_all($products, MYSQLI_ASSOC);
+    if ($_GET['frompage'] == 'product') {
+        foreach ($products as $product) {
+            echo
+            '<tr>
             <td style="display: none">' . $product['subcatid'] . '</td>
             <td style="display: none">' . $product['productno'] . '</td>
+            <td><img src="../images/product/' . $product['image'] . '" alt="..." height="100px" width="100px"></td>
             <td>' . $product['productid'] . '</td>
             <td>' . $product['mrp'] . '</td>
             <td>' . $product['sellprice'] . '</td>
@@ -43,9 +58,29 @@ if ($_GET['list'] == 'subcat') {
             <td><button type="button" class="btn btn-success py-1" data-bs-toggle="modal" data-bs-target="#editproduct" onclick="editproduct(this)"><span class="material-icons">edit</span></button></td>
             <td><button type="button" class="btn btn-danger py-1" onclick="deleteproduct(this)" data-bs-toggle="modal" data-bs-target="#deleteproduct"><span class="material-icons">delete</span></button></td>
             </tr>';
+        }
+    } else if ($_GET['frompage'] == 'outofstockproduct') {
+        foreach ($products as $product) {
+            echo
+            '<tr>
+            <td style="display: none">' . $product['subcatid'] . '</td>
+            <td style="display: none">' . $product['productno'] . '</td>
+            <td><img src="../images/product/' . $product['image'] . '" alt="..." height="100px" width="100px"></td>
+            <td>' . $product['productid'] . '</td>
+            <td>' . $product['mrp'] . '</td>
+            <td>' . $product['sellprice'] . '</td>
+            <td>' . $product['purchaseprice'] . '</td>
+            <td>' . $product['available'] . '</td>
+            <td style="display: none">' . $product['cgst'] . '</td>
+            <td style="display: none">' . $product['sgst'] . '</td>
+            <td style="display: none">' . $product['offer'] . '</td>
+            <td><button type="button" class="btn btn-success py-1" data-bs-toggle="modal" data-bs-target="#editproduct" onclick="editproduct(this)"><span class="material-icons">edit</span></button></td>
+            <td><button type="button" class="btn btn-danger py-1" onclick="deleteproduct(this)" data-bs-toggle="modal" data-bs-target="#deleteproduct"><span class="material-icons">delete</span></button></td>
+            </tr>';
+        }
     }
 } else if ($_GET['list'] == 'payments') {
-    $supplierid=$_SESSION['supplierid'];
+    $supplierid = $_SESSION['supplierid'];
     $query = "SELECT * FROM `payment` AS p WHERE `p`.`supplierid`='$supplierid' ORDER BY `p`.`paid`, `p`.`paymentid` ;";
     $payments = mysqli_query($con, $query);
     $sno = 1;
@@ -68,19 +103,19 @@ if ($_GET['list'] == 'subcat') {
                 </tr>
             </thead>
             <tbody>';
-                while ($payment = mysqli_fetch_assoc($payments)) {
-                echo
-                '<tr onclick=getdisc(' . $payment['paymentid'] . ')>
+    while ($payment = mysqli_fetch_assoc($payments)) {
+        echo
+        '<tr onclick=getdisc(' . $payment['paymentid'] . ')>
                     <td>' . $sno . '</td>
                     <td>' . $payment["paymentid"] . '</td>
                     <td>' . $payment["amount"] . '</td>
                     <td>' . $payment["date"] . '</td>
                     <td>' . $payment["collected"] . '</td>
                 </tr>';
-                $sno += 1;
-                }
-            echo
-            '</tbody>
+        $sno += 1;
+    }
+    echo
+    '</tbody>
         </table>
     </div>';
 } else if ($_GET['list'] == 'paymentdisc') {

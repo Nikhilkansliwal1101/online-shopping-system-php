@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_GET['list'])){
+if (!isset($_GET['list'])) {
     header("Location: index.php");
     die();
 }
@@ -18,6 +18,7 @@ if ($_GET['list'] == 'subcat') {
             echo
             '<tr>
             <td style="display: none">' . $subcat['catid'] . '</td>
+            <td><img src="../images/subcategory/' . $subcat['image'] . '" alt="..." height="100px" width="100px"></td>
             <td>' . $subcat['catname'] . '</td>
             <td style="display: none">' . $subcat['subcatid'] . '</td>
             <td>' . $subcat['name'] . '</td>
@@ -39,21 +40,35 @@ if ($_GET['list'] == 'subcat') {
         echo
         '<tr>
         <td style="display: none">' . $subcat['subcatid'] . '</td>
+        <td><img src="../images/subcategory/' . $subcat['image'] . '" alt="..." height="100px" width="100px"></td>
         <td>' . $subcat['name'] . '</td>
-        <td><button type="button" class="btn btn-success" onclick="editnullcatsubcategory(this)" data-bs-toggle="modal" data-bs-target="#editnullcatsubcat"><span class="material-icons">edit</span></button></td>
-        <td><button type="button" class="btn btn-danger" onclick="deletenullcatsubcategory(this)" data-bs-toggle="modal" data-bs-target="#deletenullcatsubcategory"><span class="material-icons">delete</span></button></td>
+        <td><button type="button" class="btn btn-success" onclick="editsubcategory(this)" data-bs-toggle="modal" data-bs-target="#editsubcat"><span class="material-icons">edit</span></button></td>
+        <td><button type="button" class="btn btn-danger" onclick="deletesubcategory(this)" data-bs-toggle="modal" data-bs-target="#deletesubcat"><span class="material-icons">delete</span></button></td>
         </tr>';
     }
 } else if ($_GET['list'] == 'product') {
     if (!substr_compare($_GET['subcatid'], "cat", 0, 3)) {
-        if ($_GET['subcatid'][3] == 0) {
-            $query = "SELECT * FROM `product` WHERE (`subcatid` IS NOT NULL);";
+        if ($_GET['frompage'] == 'outofstockproduct') {
+            if ($_GET['subcatid'][3] == 0) {
+                $query = "SELECT * FROM `product` WHERE (`subcatid` IS NOT NULL) AND `available`=0;";
+            } else {
+                $_GET['subcatid'] = str_replace("cat", "", $_GET['subcatid']);
+                $query = "SELECT * FROM `product` WHERE `available`=0 AND subcatid IN (SELECT `subcatid` FROM `subcategory` WHERE `catid`=" . $_GET['subcatid'] . ");";
+            }
         } else {
-            $_GET['subcatid'] = str_replace("cat", "", $_GET['subcatid']);
-            $query = "SELECT * FROM `product` WHERE subcatid IN (SELECT `subcatid` FROM `subcategory` WHERE `catid`=" . $_GET['subcatid'] . ");";
+            if ($_GET['subcatid'][3] == 0) {
+                $query = "SELECT * FROM `product` WHERE (`subcatid` IS NOT NULL);";
+            } else {
+                $_GET['subcatid'] = str_replace("cat", "", $_GET['subcatid']);
+                $query = "SELECT * FROM `product` WHERE subcatid IN (SELECT `subcatid` FROM `subcategory` WHERE `catid`=" . $_GET['subcatid'] . ");";
+            }
         }
     } else {
-        $query = "SELECT * FROM `product` WHERE subcatid=" . $_GET['subcatid'];
+        if ($_GET['frompage'] == 'outofstockproduct') {
+            $query = "SELECT * FROM `product` WHERE `available`=0 AND subcatid=" . $_GET['subcatid'];
+        } else {
+            $query = "SELECT * FROM `product` WHERE subcatid=" . $_GET['subcatid'];
+        }
     }
     $products = mysqli_query($con, $query);
     $products = mysqli_fetch_all($products, MYSQLI_ASSOC);
@@ -63,6 +78,26 @@ if ($_GET['list'] == 'subcat') {
             '<tr>
             <td style="display: none">' . $product['subcatid'] . '</td>
             <td style="display: none">' . $product['productno'] . '</td>
+            <td><img src="../images/product/' . $product['image'] . '" alt="..." height="100px" width="100px"></td>
+            <td>' . $product['productid'] . '</td>
+            <td>' . $product['mrp'] . '</td>
+            <td>' . $product['sellprice'] . '</td>
+            <td>' . $product['purchaseprice'] . '</td>
+            <td>' . $product['available'] . '</td>
+            <td style="display: none">' . $product['cgst'] . '</td>
+            <td style="display: none">' . $product['sgst'] . '</td>
+            <td style="display: none">' . $product['offer'] . '</td>
+            <td><button type="button" class="btn btn-success py-1" data-bs-toggle="modal" data-bs-target="#editproduct" onclick="editproduct(this)"><span class="material-icons">edit</span></button></td>
+            <td><button type="button" class="btn btn-danger py-1" onclick="deleteproduct(this)" data-bs-toggle="modal" data-bs-target="#deleteproduct"><span class="material-icons">delete</span></button></td>
+            </tr>';
+        }
+    } else if ($_GET['frompage'] == 'outofstockproduct') {
+        foreach ($products as $product) {
+            echo
+            '<tr>
+            <td style="display: none">' . $product['subcatid'] . '</td>
+            <td style="display: none">' . $product['productno'] . '</td>
+            <td><img src="../images/product/' . $product['image'] . '" alt="..." height="100px" width="100px"></td>
             <td>' . $product['productid'] . '</td>
             <td>' . $product['mrp'] . '</td>
             <td>' . $product['sellprice'] . '</td>
@@ -87,15 +122,17 @@ if ($_GET['list'] == 'subcat') {
             <td>' . $product['available'] . '</td>
             <td style="display: none"><h5>' . $product['mrp'] . '</h5></td>
             <td style="display: none"><h5>' . $product['sellprice'] . '</h5></td>
-            <td>
-                <div class="text-center d-flex nowrap justify-content-center">
-                    <div><button type="button" class="btn btn-danger"  onclick=decrement(this)>-</button>
-                    </div>
+            <td>';
+            if ($product['available'] > 0) {
+                echo '<div class="text-center d-flex nowrap justify-content-center">
+                    <div><button type="button" class="btn btn-danger"  onclick=decrement(this)>-</button></div>
                     <div><h5 class="btn quantity">0</h5></div>
-                    <div><button type="button" class="btn btn-success" onclick=increment(this)>+</button>
-                    </div>
-                </div>
-            </td>';
+                    <div><button type="button" class="btn btn-success" onclick=increment(this)>+</button></div>
+                </div>';
+            } else {
+                echo '<div><button type="button" class="btn btn-warning">Out Of Stock</button></div>';
+            }
+            echo '</td>';
         }
     }
 } else if ($_GET['list'] == 'nullproduct') {
@@ -106,17 +143,22 @@ if ($_GET['list'] == 'subcat') {
         echo
         '<tr>
         <td style="display: none">' . $product['productno'] . '</td>
+        <td><img src="../images/product/' . $product['image'] . '" alt="..." height="100px" width="100px"></td>
         <td>' . $product['productid'] . '</td>
-        <td class="d-flex align-items-center"><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editnullproduct" onclick="editnullproduct(this)"><span class="material-icons">edit</span></button></td>
-        <td><button type="button" class="btn btn-danger py-0" onclick="deletenullproduct(this)" data-bs-toggle="modal" data-bs-target="#deletenullproduct"><span class="material-icons">delete</span></button></td>
+        <td><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editproduct" onclick="editproduct(this)"><span class="material-icons">edit</span></button></td>
+        <td><button type="button" class="btn btn-danger" onclick="deleteproduct(this)" data-bs-toggle="modal" data-bs-target="#deleteproduct"><span class="material-icons">delete</span></button></td>
         </tr>';
     }
 } else if ($_GET['list'] == 'order') {
-    $query = "SELECT * FROM `orders` AS o,`customer` AS c WHERE `o`.`custid`=`c`.`custid` ORDER BY `o`.`status` DESC, `o`.`orderid` ;";
+    if ($_GET['frompage'] == 'orders') {
+        $query = "SELECT * FROM `orders` AS o,`customer` AS c WHERE `o`.`custid`=`c`.`custid` ORDER BY `o`.`status` DESC, `o`.`orderid` ;";
+    } else if ($_GET['frompage'] == 'notcomorders') {
+        $query = "SELECT * FROM `orders` AS o,`customer` AS c WHERE `o`.`status` LIKE 'notcom' AND `o`.`custid`=`c`.`custid` ORDER BY `o`.`status` DESC, `o`.`orderid` ;";
+    }
     $orders = mysqli_query($con, $query);
     $sno = 1;
     echo
-    '<div class="card my-4 shadow">
+    '<div class="card my-2 shadow">
             <div class="card-header">
                 <h1>Orders</h1>
             </div>
@@ -126,22 +168,24 @@ if ($_GET['list'] == 'subcat') {
         <table id="orders" class="table table-hover table-bordered table-striped">
             <thead class="bg-success text-light">
                 <tr>
-                    <th scope="col">SNo.</th>
+                    <th scope="col" class="d-none">SNo.</th>
                     <th scope="col">ORDER ID</th>
                     <th scope="col">NAME</th>
                     <th scope="col">ADDRESS</th>
-                    <th scope="col">ORDER DATE</th>
-                    <th scope="col">DELIVERED</th>
+                    <th scope="col">AMOUNT</th>
+                    <th scope="col">ORDER ON</th>
+                    <th scope="col">DELIVERE ON</th>
                 </tr>
             </thead>
             <tbody>';
     while ($order = mysqli_fetch_assoc($orders)) {
         echo
         '<tr>
-                    <td onclick=getorderdisc(' . $order['orderid'] . ')>' . $sno . '</td>
+                    <td class="d-none">' . $sno . '</td>
                     <td onclick=getorderdisc(' . $order['orderid'] . ')>' . $order["orderid"] . '</td>
                     <td onclick=getorderdisc(' . $order['orderid'] . ')>' . $order["name"] . '</td>
                     <td onclick=getorderdisc(' . $order['orderid'] . ')>' . $order["address"] . ' ' . $order["city"] . ' ' . $order["state"] . '</td>
+                    <td onclick=getorderdisc(' . $order['orderid'] . ')>' . $order["amount"] . '</td>
                     <td onclick=getorderdisc(' . $order['orderid'] . ')>' . $order["orderdate"] . '</td>';
         if ($order['status'] == 'notcom') {
             echo '<td><button type="button" class="btn btn-danger py-0" onclick=delivered(' . $order["orderid"] . ')>Delivered</button></td>';
@@ -386,30 +430,30 @@ if ($_GET['list'] == 'subcat') {
                 </tr>
             </thead>
             <tbody>';
-                while ($payment = mysqli_fetch_assoc($payments)) {
-                echo
-                '<tr>
+    while ($payment = mysqli_fetch_assoc($payments)) {
+        echo
+        '<tr>
                     <td onclick=getdisc(' . $payment['paymentid'] . ')>' . $sno . '</td>
                     <td onclick=getdisc(' . $payment['paymentid'] . ')>' . $payment["paymentid"] . '</td>
                     <td onclick=getdisc(' . $payment['paymentid'] . ')>' . $payment["name"] . '</td>
                     <td onclick=getdisc(' . $payment['paymentid'] . ')>' . $payment["amount"] . '</td>
                     <td onclick=getdisc(' . $payment['paymentid'] . ')>' . $payment["date"] . '</td>';
-                    if ($payment['collected'] == NULL) {
-                        echo '<td><button type="button" class="btn btn-success py-0" onclick=ordercollected(' . $payment["paymentid"] . ')>collected</button></td>';
-                    } else {
-                        echo '<td>' . $payment["collected"] . '</td>';
-                    }
-                    if ($payment['paid'] == NULL) {
-                        echo '<td><button type="button" class="btn btn-danger py-0" onclick=paypayment(' . $payment["paymentid"] . ')>Paid</button></td>';
-                    } else {
-                        echo '<td>' . $payment["paid"] . '</td>';
-                    }
-                echo
-                '</tr>';
-                $sno += 1;
-                }
-            echo
-            '</tbody>
+        if ($payment['collected'] == NULL) {
+            echo '<td><button type="button" class="btn btn-success py-0" onclick=ordercollected(' . $payment["paymentid"] . ')>collected</button></td>';
+        } else {
+            echo '<td>' . $payment["collected"] . '</td>';
+        }
+        if ($payment['paid'] == NULL) {
+            echo '<td><button type="button" class="btn btn-danger py-0" onclick=paypayment(' . $payment["paymentid"] . ')>Paid</button></td>';
+        } else {
+            echo '<td>' . $payment["paid"] . '</td>';
+        }
+        echo
+        '</tr>';
+        $sno += 1;
+    }
+    echo
+    '</tbody>
         </table>
     </div>';
 } else if ($_GET['list'] == 'paymentdisc') {

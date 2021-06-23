@@ -34,7 +34,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/managecategory.png" alt="image"
+                                <img src="../images/system/managecategory.png" alt="image"
                                     style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
@@ -51,7 +51,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/managesubcategory.png" alt="image"
+                                <img src="../images/system/managesubcategory.png" alt="image"
                                     style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
@@ -68,7 +68,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/manageproduct.png" alt="image"
+                                <img src="../images/system/manageproduct.png" alt="image"
                                     style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
@@ -92,7 +92,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/customer.png" alt="image" style="width:100%;height:200px;">
+                                <img src="../images/system/customer.png" alt="image" style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">
@@ -115,7 +115,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/order.jfif" alt="image" style="width:100%;height:200px;">
+                                <img src="../images/system/order.jfif" alt="image" style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">
@@ -131,7 +131,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/placeneworder.png" alt="image" style="width:100%;height:200px;">
+                                <img src="../images/system/placeneworder.png" alt="image" style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">
@@ -154,7 +154,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/placeorder.png" alt="image" style="width:100%;height:200px;">
+                                <img src="../images/system/placeorder.png" alt="image" style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">
@@ -170,7 +170,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/paymoney.png" alt="image" style="width:100%;height:200px;">
+                                <img src="../images/system/paymoney.png" alt="image" style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">
@@ -186,7 +186,7 @@ if(!isset($_SESSION['adminid']))
                     <div class="card border border-3 rounded-2 shadow p-3 mb-5 bg-white" style="max-width: 800px">
                         <div class="row g-0">
                             <div class="col-6">
-                                <img src="../online/images/addnewsupplier.png" alt="image" style="width:100%;height:200px;">
+                                <img src="../images/system/addnewsupplier.png" alt="image" style="width:100%;height:200px;">
                             </div>
                             <div class="col-6 text-dark d-flex justify-content-center align-items-center">
                                 <div class="card-body">

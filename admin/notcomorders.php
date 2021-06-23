@@ -25,7 +25,6 @@ if (!isset($_SESSION['adminid'])) {
         <div id="order" class="border border-4 shadow p-2">
         </div>
         <hr><br>
-
     </div>
     <div class="modal fade bd-example-modal-lg p-1" id="orderd" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -97,7 +96,7 @@ if (!isset($_SESSION['adminid'])) {
                     $('#orders').DataTable();
                 }
             };
-            xhttp.open("GET", "list.php?list=order&frompage=orders", true);
+            xhttp.open("GET", "list.php?list=order&frompage=notcomorders", true);
             xhttp.send();
         }
     </script>

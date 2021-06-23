@@ -59,7 +59,7 @@ mysqli_close($con);
     </div>
     <div class="container border border-4 shadow p-3 mb-5" style="max-width: 600px">
         <div class="d-flex justify-content-center">
-            <img src="images/user.png" alt="User" class="img-fluid">
+            <img src="../images/system/user.png" alt="User" class="img-fluid">
         </div>
         <br>
         <fieldset disabled="disabled" id="form">

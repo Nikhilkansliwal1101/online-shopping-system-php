@@ -5,18 +5,18 @@ if (!isset($_SESSION['adminid'])) {
 }
 require("common/database.php");
 $responce = "";
-$target_dir = "../images/category/";
-// add new category
-if (isset($_POST['addcategory'])) {
-    $catname = $_POST['catname'];
-    $imagename = str_replace(" ", "", $catname);
-    $query = "SELECT * FROM `category` WHERE `catname` LIKE '$catname';";
+$target_dir = "../images/carousel/";
+// add new carousel
+if (isset($_POST['addcarousel'])) {
+    $clable = $_POST['clable'];
+    $imagename = str_replace(" ", "", $clable);
+    $query = "SELECT * FROM `carousel` WHERE `clable` LIKE '$clable';";
     $result = mysqli_query($con, $query);
     $num = mysqli_num_rows($result);
     if ($num == 0) {
-        $catdesc = $_POST['catdesc'];
-        $check = getimagesize($_FILES["catimage"]["tmp_name"]);
-        $target_file = $target_dir . basename($_FILES["catimage"]["name"]);
+        $cdisc = $_POST['cdisc'];
+        $check = getimagesize($_FILES["cimage"]["tmp_name"]);
+        $target_file = $target_dir . basename($_FILES["cimage"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         $target_file = $target_dir . $imagename . "." . $imageFileType;
         $imagename = $imagename . "." . $imageFileType;
@@ -28,26 +28,26 @@ if (isset($_POST['addcategory'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
             } else {
-                if ($_FILES["catimage"]["size"] > 500000) {
+                if ($_FILES["cimage"]["size"] > 700000) {
                     $responce =
                         '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Error! </strong>File size is too big
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
                 } else {
-                    if (move_uploaded_file($_FILES["catimage"]["tmp_name"], $target_file)) {
-                        $query = "INSERT INTO `category` (`catid`, `catname`, `catdesc`, `image`) VALUES (NULL, '$catname', '$catdesc', '$imagename');";
+                    if (move_uploaded_file($_FILES["cimage"]["tmp_name"], $target_file)) {
+                        $query = "INSERT INTO `carousel` (`id`, `clable`, `cdisc`, `image`) VALUES (NULL, '$clable', '$cdisc', '$imagename');";
                         $result = mysqli_query($con, $query);
                         if ($result) {
                             $responce =
                                 '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Sucess! </strong>Category added sucessfully
+                        <strong>Sucess! </strong>Carousel added sucessfully
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
                         } else {
                             $responce =
                                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error! </strong>Cannot add category
+                        <strong>Error! </strong>Cannot add carousel
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
                         }
@@ -70,18 +70,18 @@ if (isset($_POST['addcategory'])) {
     } else {
         $responce =
             '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error! </strong>Category already exists
+        <strong>Error! </strong>Carousel already exists
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
     }
 }
-//update category
-if (isset($_POST['editcategory'])) {
-    if (isset($_POST['editimage']) && ($_FILES['editcatimage']["size"]!=0)) {
-        $catname = $_POST['editcategoryname'];
-        $imagename = str_replace(" ", "", $catname);
-        $check = getimagesize($_FILES["editcatimage"]["tmp_name"]);
-        $target_file = $target_dir . basename($_FILES["editcatimage"]["name"]);
+//update carousel
+if (isset($_POST['editcarousel'])) {
+    if (isset($_POST['editimage']) && ($_FILES['editcimage']["size"]!=0)) {
+        $clable = $_POST['editclable'];
+        $imagename = str_replace(" ", "", $clable);
+        $check = getimagesize($_FILES["editcimage"]["tmp_name"]);
+        $target_file = $target_dir . basename($_FILES["editcimage"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         $target_file = $target_dir . $imagename . "." . $imageFileType;
         $imagename = $imagename . "." . $imageFileType;
@@ -93,28 +93,28 @@ if (isset($_POST['editcategory'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
             } else {
-                if ($_FILES["editcatimage"]["size"] > 500000) {
+                if ($_FILES["editcimage"]["size"] > 700000) {
                     $responce =
                         '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Error! </strong>File size is too big
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
                 } else {
-                    if (move_uploaded_file($_FILES["editcatimage"]["tmp_name"], $target_file)) {
-                        $catid = $_POST['editcatid'];
-                        $catdesc = $_POST['editcatdesc'];
-                        $query = "UPDATE `category` SET `catdesc` = '$catdesc',`image`='$imagename' WHERE `category`.`catid` = '$catid';";
+                    if (move_uploaded_file($_FILES["editcimage"]["tmp_name"], $target_file)) {
+                        $id = $_POST['editid'];
+                        $cdisc = $_POST['editcdisc'];
+                        $query = "UPDATE `carousel` SET `cdisc` = '$cdisc',`image`='$imagename' WHERE `carousel`.`id` = '$id';";
                         $result = mysqli_query($con, $query);
                         if ($result) {
                             $responce =
                                 '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Sucess! </strong>category updated sucessfully
+                            <strong>Sucess! </strong>carousel updated sucessfully
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>';
                         } else {
                             $responce =
                                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error! </strong>Cannot update category
+                            <strong>Error! </strong>Cannot update carousel
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>';
                         }
@@ -129,49 +129,49 @@ if (isset($_POST['editcategory'])) {
             }
         }
     } else {
-        $catid = $_POST['editcatid'];
-        $catdesc = $_POST['editcatdesc'];
-        $query = "UPDATE `category` SET `catdesc` = '$catdesc' WHERE `category`.`catid` = '$catid';";
+        $id = $_POST['editid'];
+        $cdisc = $_POST['editcdisc'];
+        $query = "UPDATE `carousel` SET `cdisc` = '$cdisc' WHERE `carousel`.`id` = '$id';";
         $result = mysqli_query($con, $query);
         if ($result) {
             $responce =
                 '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Sucess! </strong>category updated sucessfully
+                <strong>Sucess! </strong>carousel updated sucessfully
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
         } else {
             $responce =
                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error! </strong>Cannot update category
+                <strong>Error! </strong>Cannot update carousel
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
         }
     }
 }
-//delete category
-if (isset($_POST['deletecategory'])) {
-    $catid = $_POST['deletecatid'];
-    $query = "DELETE FROM `category` WHERE `category`.`catid` = $catid;";
+//delete carousel
+if (isset($_POST['deletecarousel'])) {
+    $id = $_POST['deleteid'];
+    $query = "DELETE FROM `carousel` WHERE `carousel`.`id` = $id;";
     $result = mysqli_query($con, $query);
     if ($result) {
         $responce =
             '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Sucess! </strong>category deleted sucessfully
+        <strong>Sucess! </strong>carousel deleted sucessfully
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
     } else {
         $responce =
             '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error! </strong>Cannot delete category
+        <strong>Error! </strong>Cannot delete carousel
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
     }
 }
 
-// category list
-$query = "SELECT * FROM `category`";
-$category = mysqli_query($con, $query);
-$category = mysqli_fetch_all($category, MYSQLI_ASSOC);
+// carousel list
+$query = "SELECT * FROM `carousel`";
+$carousel = mysqli_query($con, $query);
+$carousel = mysqli_fetch_all($carousel, MYSQLI_ASSOC);
 
 ?>
 
@@ -187,7 +187,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <title>Categories</title>
+    <title>Carousel</title>
 </head>
 
 <body>
@@ -197,24 +197,24 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
         <?php echo $responce; ?>
     </div>
     <div class="text-center small">
-        <!-- category table -->
+        <!-- carousel table -->
         <div class="card mb-4 shadow">
             <div class="card-header">
-                <h1>Categories</h1>
+                <h1>Carousel</h1>
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addcat">
-                    Add New category
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addcarousel">
+                    Add New Carousel
                 </button>
             </div>
         </div>
         <div class="table-responsive">
-            <table id="categorytable" class="table table-striped table-hover table-bordered text-wrap">
+            <table id="carouseltable" class="table table-striped table-hover table-bordered text-wrap">
                 <thead>
                     <tr>
-                        <th scope="col" style="display: none">Catid</th>
+                        <th scope="col" style="display: none">id</th>
                         <th scope="col"></th>
-                        <th scope="col">Category Name</th>
+                        <th scope="col">Lable</th>
                         <th scope="col">Description</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -222,19 +222,19 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($category as $cat) {
-                        $catname = $cat['catname'];
-                        $catdesc = $cat["catdesc"];
-                        $catid = $cat['catid'];
-                        $image = $cat['image'];
+                    foreach ($carousel as $ca) {
+                        $clable = $ca['clable'];
+                        $cdisc = $ca["cdisc"];
+                        $id = $ca['id'];
+                        $image = $ca['image'];
                         echo
                         '<tr>
-                        <td style="display: none">' . $catid . '</td>
-                        <td><img src="../images/category/' . $image . '" alt="..." height="100px" width="100px"></td>
-                        <td>' . $catname . '</td>
-                        <td>' . $catdesc . '</td>
-                        <td><button type="button" class="btn btn-success" onclick="editcategory(this)" data-bs-toggle="modal" data-bs-target="#editcategory"><span class="material-icons">edit</span></button></td>
-                        <td><button type="button" class="btn btn-danger" onclick="deletecategory(this)" data-bs-toggle="modal" data-bs-target="#deletecategory"><span class="material-icons">delete</span></button></td>
+                        <td style="display: none">' . $id . '</td>
+                        <td><img src="../images/carousel/' . $image . '" alt="..." height="100px" width="100px"></td>
+                        <td>' . $clable . '</td>
+                        <td>' . $cdisc . '</td>
+                        <td><button type="button" class="btn btn-success" onclick="editcarousel(this)" data-bs-toggle="modal" data-bs-target="#editcarousel"><span class="material-icons">edit</span></button></td>
+                        <td><button type="button" class="btn btn-danger" onclick="deletecarousel(this)" data-bs-toggle="modal" data-bs-target="#deletecarousel"><span class="material-icons">delete</span></button></td>
                     </tr>';
                     }
                     ?>
@@ -244,29 +244,29 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     </div>
 
 
-    <!-- Modal for adding category -->
-    <div class="modal fade" id="addcat" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <!-- Modal for adding carousel -->
+    <div class="modal fade" id="addcarousel" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel1">Add New Category</h3>
+                    <h3 class="modal-title" id="exampleModalLabel1">Add New Carousel</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="category.php" enctype="multipart/form-data" class="row g-3">
+                    <form method="post" action="carousel.php" enctype="multipart/form-data" class="row g-3">
                         <div class="mb-3 col-12">
-                            <label for="catname" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="catname" name="catname" required>
+                            <label for="clable" class="form-label">Carousel Lable</label>
+                            <input type="text" class="form-control" id="clable" name="clable" required>
                         </div>
                         <div class="mb-3 col-12">
-                            <label for="catdesc" class="form-label">Category Description</label>
-                            <input type="text" class="form-control" id="catdesc" name="catdesc" required>
+                            <label for="cdisc" class="form-label">Carousel Description</label>
+                            <input type="text" class="form-control" id="cdisc" name="cdisc" required>
                         </div>
                         <div class="mb-3 col-12">
-                            <label for="catimage" class="form-label">Choose Category image</label>
-                            <input type="file" name="catimage" id="catimage" required>
+                            <label for="cimage" class="form-label">Choose Carousel Image</label>
+                            <input type="file" name="cimage" id="cimage" required>
                         </div>
-                        <button type="submit" class="btn btn-primary" name="addcategory">Submit</button>
+                        <button type="submit" class="btn btn-primary" name="addcarousel">Submit</button>
                     </form>
                 </div>
             </div>
@@ -274,61 +274,61 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     </div>
 
 
-    <!-- Modal for updating category -->
-    <div class="modal fade" id="editcategory" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <!-- Modal for updating carousel -->
+    <div class="modal fade" id="editcarousel" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel3">Edit Category</h3>
+                    <h3 class="modal-title" id="exampleModalLabel3">Edit Carousel</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="category.php" enctype="multipart/form-data" class="row g-3">
+                    <form method="post" action="carousel.php" enctype="multipart/form-data" class="row g-3">
                         <div class="mb-3 col-12">
-                            <label for="editcategoryname" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="editcategoryname" name="editcategoryname" readonly>
+                            <label for="editclable" class="form-label">Carousel Name</label>
+                            <input type="text" class="form-control" id="editclable" name="editclable" readonly>
                         </div>
                         <div class="mb-3 d-none">
-                            <input type="text" class="form-control" id="editcatid" name="editcatid" style="Display: none" readonly>
+                            <input type="text" class="form-control" id="editid" name="editid" style="Display: none" readonly>
                         </div>
                         <div class="mb-3 col-12">
-                            <label for="editcatdesc" class="form-label">Category Description</label>
-                            <input type="text" class="form-control" id="editcatdesc" name="editcatdesc">
+                            <label for="editcdisc" class="form-label">Carousel Description</label>
+                            <input type="text" class="form-control" id="editcdisc" name="editcdisc">
                         </div>
                         <div class="mb-3 col-12">
-                            <label for="editcatimage" class="form-label">Select checkbox for updating image</label>
+                            <label for="editcimage" class="form-label">Select checkbox for updating image</label>
                             <input type="checkbox" name="editimage" id="editimage">
-                            <input type="file" name="editcatimage" id="editcatimage">
+                            <input type="file" name="editcimage" id="editcimage">
                         </div>
-                        <button type="submit" class="btn btn-primary" name="editcategory">Submit</button>
+                        <button type="submit" class="btn btn-primary" name="editcarousel">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- modal foe deleting category -->
-    <div class="modal fade" id="deletecategory" tabindex="-1" aria-labelledby="exampleModalLabel5" aria-hidden="true">
+    <!-- modal foe deleting carousel -->
+    <div class="modal fade" id="deletecarousel" tabindex="-1" aria-labelledby="exampleModalLabel5" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel5">Delete Category</h3>
+                    <h3 class="modal-title" id="exampleModalLabel5">Delete Carousel</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="category.php" enctype="multipart/form-data" class="row g-3">
+                    <form method="post" action="carousel.php" enctype="multipart/form-data" class="row g-3">
                         <div class="mb-3 d-none">
-                            <input type="text" class="form-control" id="deletecatid" name="deletecatid" style="display: none">
+                            <input type="text" class="form-control" id="deleteid" name="deleteid" style="display: none">
                         </div>
                         <div class="mb-3 col-12">
-                            <label for="deletecategoryname" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="deletecategoryname" name="deletecategoryname" readonly>
+                            <label for="deleteclable" class="form-label">Carousel Lable</label>
+                            <input type="text" class="form-control" id="deleteclable" name="deleteclable" readonly>
                         </div>
                         <div class="mb-3 col-12">
-                            <label class="form-label">Please Press Delete category to
+                            <label class="form-label">Please Press Delete Carousel to
                                 Conform</label>
                         </div>
-                        <button type="submit" class="btn btn-primary" name="deletecategory">Delete Category</button>
+                        <button type="submit" class="btn btn-primary" name="deletecarousel">Delete Carousel</button>
                     </form>
                 </div>
             </div>
@@ -341,22 +341,22 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     </script>
     <script>
         $(document).ready(function() {
-            $('#categorytable').DataTable();
+            $('#carouseltable').DataTable();
         });
 
-        function editcategory(item) {
+        function editcarousel(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('editcategoryname').value = item[2].innerHTML;
-            document.getElementById('editcatid').value = item[0].innerHTML;
-            document.getElementById('editcatdesc').value = item[3].innerHTML;
+            document.getElementById('editclable').value = item[2].innerHTML;
+            document.getElementById('editid').value = item[0].innerHTML;
+            document.getElementById('editcdisc').value = item[3].innerHTML;
         }
 
-        function deletecategory(item) {
+        function deletecarousel(item) {
             item = item.parentNode.parentNode;
             item = item.getElementsByTagName('td');
-            document.getElementById('deletecategoryname').value = item[2].innerHTML;
-            document.getElementById('deletecatid').value = item[0].innerHTML;
+            document.getElementById('deleteclable').value = item[2].innerHTML;
+            document.getElementById('deleteid').value = item[0].innerHTML;
         }
     </script>
 </body>

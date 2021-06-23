@@ -53,7 +53,7 @@ $detail = mysqli_fetch_assoc($detail);
 </div>
   <div class="container border border-4 shadow p-3" style="max-width: 600px">
     <div class="d-flex justify-content-center">
-      <img src="../online/images/user.png" alt="User" class="img-fluid">
+      <img src="../images/system/user.png" alt="User" class="img-fluid">
     </div>
     <br>
     <fieldset disabled="disabled" id="form">

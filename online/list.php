@@ -33,7 +33,7 @@ if ($_GET['list'] == 'product') {
                 </div>
                 <div class="row">
                     <div class="col col-6 ">
-                        <img src="images/' . $image . '" class="card-img-top" alt="..." height="100%">
+                        <img src="../images/product/' . $image . '" class="card-img-top" alt="..." height="100%">
                     </div>
                     <div class="col col-6 ">
                         <h5 style="display: none">' . $pno . '</h5>
@@ -97,7 +97,7 @@ if ($_GET['list'] == 'product') {
                     <div class="card-body d-flex justify-content-center align-items-center" style="z-index: 1;">
                         <h6 class="card-title" style="font-weight: 900">' . $subcatname . '</h6>
                     </div>
-                    <img src="images/' . $image . '" alt="image" class="card-img p-1" width=100% height=100% style="opacity: 0.6;position: absolute;z-index: 0;">
+                    <img src="../images/subcategory/' . $image . '" alt="image" class="card-img p-1" width=100% height=100% style="opacity: 0.6;position: absolute;z-index: 0;">
                 </div>
                 </a>
             </div>';

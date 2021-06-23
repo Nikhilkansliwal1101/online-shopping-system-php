@@ -118,7 +118,7 @@ session_start();
                             `<div class="card p-3 shadow text-center">
                                 <div class="card-header">
                                     <h1>Your Cart</h1>
-                                    <img src="images/emptycart.png" class="img-fluid" alt="Responsive image">
+                                    <img src="../images/system/emptycart.png" class="img-fluid" alt="Responsive image">
                                 </div>
                             </div>`;;
                         localStorage.removeItem('cart');
@@ -245,7 +245,7 @@ session_start();
                     `<div class="card p-3 shadow text-center">
                         <div class="card-header">
                             <h1>Your Cart</h1>
-                            <img src="images/emptycart.png" class="img-fluid" alt="Responsive image">
+                            <img src="../images/system/emptycart.png" class="img-fluid" alt="Responsive image">
                         </div>
                     </div>`;
             }

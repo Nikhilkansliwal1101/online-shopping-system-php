@@ -10,6 +10,7 @@ $result = mysqli_query($con, $query);
 $orderid = mysqli_insert_id($con);
 if ($result) {
     $products = json_decode($_POST['products'], true);
+    $total=0;
     foreach ($products as $product) {
         $pno = $product['pno'];
         $que = "SELECT `purchaseprice`,`available`,`supplierid` FROM `product` WHERE productno=$pno";
@@ -29,13 +30,17 @@ if ($result) {
             mysqli_query($con, $update);
             $add="INSERT INTO `orderdiscription` (`orderid`, `productno`, `pname`, `quantity`, `cgst`, `sgst`, `mrp`, `sellprice`, `purchaseprice`, `supplierid`, `paymentid`) VALUES ('$orderid', '$pno', '$pname', '$qty', '$cgst', '$sgst', '$mrp', '$price', '$purchaseprice', '$supplierid', NULL);";
             mysqli_query($con, $add);
-    } else if ($available != 0) {
+            $total += $price * $qty;
+        } else if ($available != 0) {
             $qty = $available;
             $update = "UPDATE `product` SET `available` = `available`-$qty, `sold` = `sold`+$qty WHERE `product`.`productno` = $pno;";
             mysqli_query($con, $update);
             $add="INSERT INTO `orderdiscription` (`orderid`, `productno`, `pname`, `quantity`, `cgst`, `sgst`, `mrp`, `sellprice`, `purchaseprice`, `supplierid`, `paymentid`) VALUES ('$orderid', '$pno', '$pname', '$qty', '$cgst', '$sgst', '$mrp', '$price', '$purchaseprice', '$supplierid', NULL);";
             mysqli_query($con, $add);
+            $total += $price * $qty;
         }
+        $query = "UPDATE `orders` SET `amount` = '$total' WHERE `orders`.`orderid` = '$orderid';";
+        mysqli_query($con, $query);
     }
 } else {
     echo

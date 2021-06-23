@@ -4,6 +4,11 @@ require("common/database.php");
 $query = "SELECT * FROM `category`";
 $category = mysqli_query($con, $query); 
 $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
+
+$query = "SELECT * FROM `carousel`";
+$carousel = mysqli_query($con, $query); 
+$ccount=mysqli_num_rows($carousel);
+$carousel = mysqli_fetch_all($carousel, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -24,38 +29,29 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
     <!-- corousel -->
     <div id="carouselExampleDark" class="carousel carousel-light slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
+            <?php
+            for($i=0;$i<$ccount;$i++){
+                echo '<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="'.$i.'"'; if($i==0){echo 'class="active"';} echo 'aria-current="true" aria-label="Slide '.($i+1).'"></button>';
+            }
+            ?>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="https://source.unsplash.com/480x270/?grocery" class="d-block w-100" alt="..."
-                    style="height: 400px;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="https://source.unsplash.com/480x270/?nuts" class="d-block w-100" alt="..."
-                    style="height: 400px;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="https://source.unsplash.com/480x270/?snacks" class="d-block w-100" alt="..."
-                    style="height: 400px;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                </div>
-            </div>
+            <?php
+            $c=0;
+            foreach($carousel as $car){
+                echo 
+                '<div class="carousel-item ';if($c==0){echo "active";} echo'" data-bs-interval="3000">
+                    <img src="../images/carousel/' . $car['image'] . '" class="d-block w-100" alt="..."
+                        style="height: 400px;opacity: 0.7">
+                    <div class="carousel-caption d-none d-md-block text-dark">
+                        <h4>'.$car["clable"].'</h4>
+                        <p>'.$car["cdisc"].'</p>
+                    </div>
+                </div>';
+                $c++;
+            }
+            echo mysqli_error($con);
+            ?>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -87,7 +83,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                             <div class="card-body d-flex justify-content-center align-items-center" style="z-index: 1;">
                                 <h6 class="card-title" style="font-weight: 900">' . $catname . '</h6>
                             </div>
-                            <img src="images/' . $image . '" alt="image" class="card-img p-1" width=100% height=100% style="opacity: 0.7;position: absolute;z-index: 0;">
+                            <img src="../images/category/' . $image . '" alt="image" class="card-img p-1" width=100% height=100% style="opacity: 0.7;position: absolute;z-index: 0;">
                         </div>
                         </a>
                     </div>';
@@ -122,7 +118,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                             <div class="card-header p-0 shadow">
                                 <p class="p-0 m-0 text-danger" style="font-size: x-small; text-align: right;"><marquee direction="right">Get ' . $discount . ' % Off</marquee></p>
                             </div>
-                            <img src="images/' . $image . '" class="card-img-top" alt="..." height="100px">
+                            <img src="../images/product/' . $image . '" class="card-img-top" alt="..." height="100px">
                             <h5 style="display: none">' . $pno . '</h5>
                             <h5 style=" display: none">' . $cgst . '</h5>
                             <h5 style="display: none">' . $sgst . '</h5>
@@ -173,7 +169,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                 '<div class="col-md-6 col-lg-4 m-0 p-1">
                     <a href="category.php?catid=' . $catid . '" style="text-decoration: none">
                     <div class="card border border-3 rounded-2 shadow p-3  text-dark d-flex justify-content-center" style="height:300px;">
-                        <img src="images/' . $image . '" alt="image" class="card-img-top p-1" style="width:100%; height: 150px">
+                        <img src="../images/category/' . $image . '" alt="image" class="card-img-top p-1" style="width:100%; height: 150px">
                         <div class="card-body">
                             <h5 class="card-title text-center">' . $catname . '</h5>
                             <p class="card-text text-center">' . $catdesc . '</p>
@@ -195,7 +191,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                         '<a href="subcategory.php?subcatid=' . $subcatid . '&catid=' . $catid . '" class="text-decoration-none">
                             <div class="col m-0">
                                 <div class="card  border border-3 rounded-2 shadow p-1 mb-1 bg-white text-dark d-flex justify-content-center align-items-center" style="height:200px;">
-                                    <img src="images/' . $image . '" alt="image" class="card-img-top p-1" style="width:100%;height:100px;" >
+                                    <img src="../images/subcategory/' . $image . '" alt="image" class="card-img-top p-1" style="width:100%;height:100px;" >
                                     <div class="card-body text-center">
                                         <p class="card-title">' . $subcatname . '</p>
                                     </div>
@@ -230,7 +226,7 @@ $category = mysqli_fetch_all($category, MYSQLI_ASSOC);
                                 <div class="card-header p-0 shadow">
                                     <p class="p-0 m-0 text-danger" style="font-size: x-small; text-align: right;"><marquee direction="right">Get ' . $discount . ' % Off</marquee></p>
                                 </div>
-                                <img src="images/' . $image . '" class="card-img-top" alt="..." height="100px">
+                                <img src="../images/product/' . $image . '" class="card-img-top" alt="..." height="100px">
                                 <h5 style="display: none">' . $pno . '</h5>
                                 <h5 style=" display: none">' . $cgst . '</h5>
                                 <h5 style="display: none">' . $sgst . '</h5>
